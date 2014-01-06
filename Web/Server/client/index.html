@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Resist Game : Can you resist the waves of monsters ?</title>
+		<link rel="stylesheet" href="client/css/global.css" />
+		<script src="/socket.io/socket.io.js"></script>
+	</head>
+	<body>
+		<h3>Resist-Game : Coming soon...</h3>
+
+		<script>
+		  var socket = io.connect('http://localhost');
+		  socket.on('news', function (data) {
+		    console.log(data);
+		    socket.emit('my other event', { my: 'data' });
+		  });
+		</script>
+	</body>
+</html>
