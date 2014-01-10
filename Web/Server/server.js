@@ -1,4 +1,6 @@
-console.log("Starting server");
+console.log("=================================");
+console.log("Starting Resist! server v0.1");
+console.log("---------------------------------");
 
 var sys = require("sys"),
 path = require("path"),  
@@ -6,7 +8,7 @@ url = require("url");
 
 var app = require('http').createServer(handler)
   , io = require('socket.io').listen(app)
-  , fs = require('fs')
+  , fs = require('fs');
 
 app.listen(8080);
 
@@ -50,8 +52,29 @@ function handler (request, response) {
 }
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
+	socket.emit('news', {
+		hello: 'world' 
+	});
+	socket.on('my other event', function (data) {
+		console.log(data);
+	});
 });
+
+
+// =================================================
+// Game logic
+// -------------------------------------------------
+var playerList = new Array();
+var time;
+
+setInterval(loop, 25);
+
+function loop() {
+    var now = new Date().getTime();
+    var delta = now - (time || now);
+    time = now;
+ 
+    // loop logic here
+
+
+}
