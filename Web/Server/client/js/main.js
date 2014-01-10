@@ -1,0 +1,1 @@
+var resist = require('Resist');

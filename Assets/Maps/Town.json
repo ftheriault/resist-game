@@ -1,0 +1,23 @@
+{
+	"name": "Town",
+	"width": 2,
+	"height": 2,
+	"tiles": [
+		{
+			"coordinate": [0,0],
+			"type": "A"
+		},
+		{
+			"coordinate": [0,1],
+			"type": "B"
+		},
+		{
+			"coordinate": [1,0],
+			"type": "A"
+		},
+		{
+			"coordinate": [1,1],
+			"type": "B"
+		}
+	]
+}
