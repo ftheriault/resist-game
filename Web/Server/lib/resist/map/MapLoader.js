@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-module.exports = MapLoader = function(filePath, Map) {
+module.exports = MapLoader = function(filePath, map) {
 
 	fs.exists(filePath, function(exists) {
 
@@ -11,7 +11,7 @@ module.exports = MapLoader = function(filePath, Map) {
 
 		fs.readFile(filePath, function(err, file) {
 			var json = JSON.parse(file.toString());
-			Map.init(json.name, json.width, json.height, json.tiles);
+			map.init(json.name, json.width, json.height, json.tiles);
 		});
 	});
 }

@@ -64,8 +64,11 @@ io.sockets.on('connection', function (socket) {
 // =================================================
 // Game logic
 // -------------------------------------------------
-var map = require('./lib/resist/Map/Map.js'),
-	mapLoader = require('./lib/resist/Map/MapLoader.js')('../../Assets/Maps/Town.json', map);
+var Map = require('./lib/resist/Map/Map'),
+	MapLoader = require('./lib/resist/Map/MapLoader'),
+	town = new Map();
+
+MapLoader('./client/maps/town.json', town);
 
 var playerList = new Array();
 var time;
