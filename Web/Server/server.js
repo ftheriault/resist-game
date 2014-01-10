@@ -36,8 +36,7 @@ function handler (request, response) {
 	                 if(err) {    
 	                     response.writeHeader(500, {"Content-Type": "text/plain"});    
 	                     response.write(err + "\n");    
-	                     response.end();    
-	                 
+	                     response.end();    	                 
 	                 }    
 	                 else{  
 	                    response.writeHeader(200);    
@@ -52,11 +51,12 @@ function handler (request, response) {
 }
 
 io.sockets.on('connection', function (socket) {
-	socket.emit('news', {
-		hello: 'world' 
-	});
-	socket.on('my other event', function (data) {
-		console.log(data);
+	socket.on('credentials', function (data) {
+		console.log("New player connection : " + data["playerName"]);
+		
+		socket.emit("logged", {
+			response : "OK"
+		});
 	});
 });
 
