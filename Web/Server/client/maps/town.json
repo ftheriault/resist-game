@@ -5,19 +5,19 @@
 	"tiles": [
 		{
 			"coordinate": [0,0],
-			"type": "A"
+			"type": "GROUND"
 		},
 		{
 			"coordinate": [0,1],
-			"type": "B"
+			"type": "ENTITY"
 		},
 		{
 			"coordinate": [1,0],
-			"type": "A"
+			"type": "GROUND"
 		},
 		{
 			"coordinate": [1,1],
-			"type": "B"
+			"type": "GROUND"
 		}
 	]
 }

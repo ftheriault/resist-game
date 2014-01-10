@@ -7,19 +7,26 @@ var Map = require('./Map/Map'),
 
 MapLoader('../../client/maps/town.json', town);
 
-setTimeout(function() {
-	console.log(town.name);
-}, 1000);
-},{"./Map/Map":2,"./Map/MapLoaderClient":3,"./Resist":4}],2:[function(require,module,exports){
+},{"./Map/Map":2,"./Map/MapLoaderClient":3,"./Resist":5}],2:[function(require,module,exports){
+var Tile = require('./Tile');
+
 module.exports = Map = function() {
 
-	var ready = false;
+	var name_ = 'Unknown',
+		width_ = 0,
+		height_ = 0,
+		tiles_ = new Array(),
+		ready_ = false;
 
 	this.init = function(name, width, height, tiles) {
-		this.name = name;
-		this.width = width;
-		this.height = height;
-		this.tiles = tiles;
+		name_ = name;
+		width_ = width;
+		height_ = height;
+		for(i in tiles) {
+			console.log(tiles[i]);
+			tiles_.push(new Tile(tiles[i]));
+		}
+		console.log(this.tiles[1].getCoordinate(), this.tiles[1].isWalkable());
 		ready = true;
 	}
 
@@ -27,7 +34,7 @@ module.exports = Map = function() {
 		return ready;
 	}
 }
-},{}],3:[function(require,module,exports){
+},{"./Tile":4}],3:[function(require,module,exports){
 module.exports = MapLoaderClient = function(filePath, map) {
 
 	$.getJSON(filePath, function(json) {
@@ -37,6 +44,30 @@ module.exports = MapLoaderClient = function(filePath, map) {
 	});
 }
 },{}],4:[function(require,module,exports){
+module.exports = Tile = function(tile) {
+
+	console.log(tile);
+
+	var coordinate = tile.coordinate,
+	properties = { WALKABLE: false };
+
+	switch(tile.type) {
+		case 'GROUND':
+		properties.WALKABLE = true;
+		break;
+		default:
+		break;
+	}
+
+	this.getCoordinate = function() {
+		return coordinate || new Array();
+	}
+
+	this.isWalkable = function() {
+		return properties.WALKABLE || false;
+	}
+}
+},{}],5:[function(require,module,exports){
 module.exports = Resist = function(playerName) {
 	this.playerName = playerName;
 	this.socket = io.connect('http://localhost');
