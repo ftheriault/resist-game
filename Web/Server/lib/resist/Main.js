@@ -6,17 +6,6 @@ var Map = require('./Map/Map'),
 	Sprite = require('./sprite/Sprite');
 
 $(document).ready(function () {
-
 	MapLoader('../../client/maps/town.json', town);
-
-	(function drawMap() {
-		if (town && town.isReady()) {
-			$('.map-title').text(town.getName());
-		}
-		else {
-			setTimeout(drawMap, 1000);
-		}
-	})();
-
-	start("Darknean", "Mage");
+	start("Darknean", "Mage", town);
 });

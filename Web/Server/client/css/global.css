@@ -13,20 +13,22 @@ html {
 }
 
 h3 {
-	margin:40px;
+	margin:20px;
 	text-align: center;
 	font-size: 2em;
 	color:white;
 }
 
 h2 {
+	margin: 10px;
 	color: white;
 	text-align: center;
 }
 
 .canvas-container {
-	width: 500px;
-	height: 500px;
-	margin: 50px auto;
-	border:1px solid white;
+	width: 576px;
+	height: 576px;
+	margin: 10px auto 0px auto;
+	border: 1px solid white;
+	background: black;
 }

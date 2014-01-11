@@ -56,9 +56,9 @@ function handler (request, response) {
 
 var Map = require('./lib/resist/Map/Map'),
 	MapLoader = require('./lib/resist/Map/MapLoader'),
-	town = new Map();
+	ctxMap = new Map();
 
-MapLoader('./client/maps/town.json', town);
+MapLoader('./client/maps/town.json', ctxMap);
 
 var ResistPlayer = require("./lib/resist/ResistPlayer");
 var NetworkConnector = require("./lib/resist/NetworkConnector");
@@ -109,7 +109,7 @@ io.sockets.on('connection', function (socket) {
 /*
  * Must dispatch an event to players and client players
  */
-function receiveEvent(eventType, spriteDestId, data) {	
+function receiveEvent(eventType, spriteDestId, data) {
 	for (var i = 0; i < playerList.length; i++) {
 		playerList[i].toDigestEventList.push(new Array(eventType, spriteDestId, data));
 		playerList[i].connector.sendEvent(eventType, spriteDestId, data);

@@ -1,27 +1,15 @@
 {
 	"name": "Town",
-	"width": 2,
-	"height": 2,
-	"tiles": [
+	"width": 576,
+	"height": 576,
+	"image": "client/images/Village_02.jpg",
+	"entities": [
 		{
-			"coordinate": [0,0],
-			"type": "GROUND",
-			"image": "Scenery/Village 1/Village_01.jpg"
-		},
-		{
-			"coordinate": [0,1],
-			"type": "ENTITY",
-			"image": "Scenery/Village 1/Village_02.jpg"
-		},
-		{
-			"coordinate": [1,0],
-			"type": "GROUND",
-			"image": "Scenery/Village 1/Village_03.jpg"
-		},
-		{
-			"coordinate": [1,1],
-			"type": "GROUND",
-			"image": "Scenery/Village 1/Village_04.jpg"
+			"name": "Well",
+			"coordinate": [201, 224],
+			"width": 32,
+			"height": 97,
+			"type" : "STRUCTURE"
 		}
 	]
 }

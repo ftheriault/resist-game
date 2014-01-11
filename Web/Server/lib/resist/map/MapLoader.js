@@ -11,7 +11,7 @@ module.exports = MapLoader = function(filePath, map) {
 
 		fs.readFile(filePath, function(err, file) {
 			var json = JSON.parse(file.toString());
-			map.init(json.name, json.width, json.height, json.tiles);
+			map.init(json.name, json.width, json.height, json.image, json.entities);
 		});
 	});
 }

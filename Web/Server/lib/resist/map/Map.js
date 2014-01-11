@@ -1,19 +1,21 @@
-var Tile = require('./Tile');
+var Entity = require('./Entity');
 
 module.exports = Map = function() {
 
 	var name_ = 'Unknown',
 		width_ = 0,
 		height_ = 0,
-		tiles_ = new Array(),
+		image_ = null,
+		entities_ = new Array(),
 		ready_ = false;
 
-	this.init = function(name, width, height, tiles) {
+	this.init = function(name, width, height, image, entities) {
 		name_ = name;
 		width_ = width;
 		height_ = height;
-		for(i in tiles) {
-			tiles_.push(new Tile(tiles[i]));
+		image_ = image;
+		for(i in entities) {
+			entities_.push(new Entity(entities[i]));
 		}
 		ready_ = true;
 	}
@@ -24,5 +26,17 @@ module.exports = Map = function() {
 
 	this.getName = function() {
 		return name_;
+	}
+
+	this.getWidth = function() {
+		return width_;
+	}
+
+	this.getHeight = function() {
+		return height_;
+	}
+
+	this.getImage = function() {
+		return image_;
 	}
 }

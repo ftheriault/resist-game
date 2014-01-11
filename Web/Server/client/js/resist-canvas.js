@@ -1,14 +1,14 @@
 var spriteList;
 var ctx = null;
-var width = 500;
-var height = 500;
 var networkConnector;
 var player;
+var ctxMap;
+var ctxImg;
 
 toDigestEventList = new Array();
 receivedEventList = new Array();
 
-function start(playerName, playerClass) {
+function start(playerName, playerClass, map) {
 	player = new ResistPlayer(playerName, new Sprite(playerClass, 50, 50));
 	ctx = document.getElementById("resist-canvas").getContext("2d");
 	networkConnector = new NetworkConnector(receiveEvent, true);
@@ -19,12 +19,27 @@ function start(playerName, playerClass) {
 
 	document.getElementById("resist-canvas").onclick = function (event) {
 		if (player.id != -1) {
-			networkConnector.sendEvent("moveTo", networkConnector.connectorClientId, new Array(event.pageX - document.getElementById("resist-canvas").offsetLeft, 
+			networkConnector.sendEvent("moveTo", networkConnector.connectorClientId, new Array(event.pageX - document.getElementById("resist-canvas").offsetLeft,
 					  event.pageY - document.getElementById("resist-canvas").offsetTop));
 		}
 	}
 
-	setInterval(loop, 25);
+	// draw map
+	ctxMap = map;
+	(function drawMap() {
+		if (ctxMap && ctxMap.isReady()) {
+			$('.map-title').text(ctxMap.getName());
+			ctxImg = new Image();
+			ctxImg.onload = function() {
+				ctxImg = ctxImg;
+			}
+			ctxImg.src = ctxMap.getImage();
+			setInterval(loop, 25);
+		}
+		else {
+			setTimeout(drawMap, 1000);
+		}
+	})();
 }
 
 function receiveEvent (eventType, spriteDestId, data) {
@@ -33,7 +48,7 @@ function receiveEvent (eventType, spriteDestId, data) {
 	if (player.id != -1) {
 		playerId = networkConnector.connectorClientId;
 	}
-		
+
 	for (var i = 0; i < spriteList.length; i++) {
 		if (spriteList[i].id == spriteDestId || spriteDestId == -1) {
 			if (eventType == "delete-sprite") {
@@ -61,8 +76,16 @@ function receiveEvent (eventType, spriteDestId, data) {
 }
 
 function loop() {
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, width, height)
+
+	if (ctxImg !== undefined) {
+		ctx.drawImage(ctxImg, 0, 0, ctxMap.getWidth(), ctxMap.getWidth());
+		//ctx.fillStyle = 'green';
+		//ctx.fillRect(0, 0, ctxMap.getWidth(), ctxMap.getHeight());
+	}
+	else {
+		ctx.fillStyle = "green";
+		ctx.fillRect(0, 0, ctxMap.getWidth(), ctxMap.getHeight());
+	}
 
     for (var i = 0; i < spriteList.length; i++) {
     	spriteList[i].digest();
