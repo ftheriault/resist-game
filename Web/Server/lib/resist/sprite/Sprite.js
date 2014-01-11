@@ -12,30 +12,64 @@ module.exports = Sprite = function(type, x, y) {
 	this.pendingAnimation = null;
 
 	this.loadTickImages = function() {
-		if (this.type == "Warrior" || this.type == "Mage" || this.type == "Skeleton") {
-			var imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk.png", "WALK", 9, 4);
+	
+		var imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk.png", "WALK", 9, 4);
+		imageSprite.changeColumnInterval(1, 8);
+		this.tileSpriteList.push(imageSprite);
+
+		imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/attack.png", "ATTACK", 6, 4);
+		imageSprite.changeColumnInterval(1, 6);
+		this.tileSpriteList.push(imageSprite);	
+
+		if (this.type == "Mage" || this.type == "Warrior") {
+			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk-head.png", "WALK", 9, 4);
 			imageSprite.changeColumnInterval(1, 8);
 			this.tileSpriteList.push(imageSprite);
 
-			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/attack.png", "ATTACK", 6, 4);
+			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk-torso.png", "WALK", 9, 4);
+			imageSprite.changeColumnInterval(1, 8);
+			this.tileSpriteList.push(imageSprite);
+
+			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk-pants.png", "WALK", 9, 4);
+			imageSprite.changeColumnInterval(1, 8);
+			this.tileSpriteList.push(imageSprite);
+
+			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/attack-head.png", "ATTACK", 6, 4);
+			imageSprite.changeColumnInterval(1, 6);
+			this.tileSpriteList.push(imageSprite);
+
+			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/attack-torso.png", "ATTACK", 6, 4);
+			imageSprite.changeColumnInterval(1, 6);
+			this.tileSpriteList.push(imageSprite);
+
+			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/attack-pants.png", "ATTACK", 6, 4);
 			imageSprite.changeColumnInterval(1, 6);
 			this.tileSpriteList.push(imageSprite);
 		}
+
 	}
 
 	this.addEffect = function (effectType) {
 		if (effectType == "special-attack-1") {
 			this.pendingAnimation = "ATTACK";
 		}
+
+		for (var i = 0; i < this.tileSpriteList.length; i++) {
+			if (this.pendingAnimation == this.tileSpriteList[i].type) {
+				this.tileSpriteList[i].resetCol();
+			}
+		}
 	}
 
-	this.tick = function (ctx) {
+	this.tick = function (ctx, spriteUnit) {
+		var animationDone = false;
+
 		if (this.life == 0) {
 			ctx.fillStyle = "black";
 			ctx.fillRect(this.x - 5, this.y - 5, 10, 10);
 		}
 		else {
-			for (var i = 0; i < this.tileSpriteList.length;i++) {
+			for (var i = 0; i < this.tileSpriteList.length; i++) {
 				if (this.pendingAnimation == null && this.tileSpriteList[i].type == "WALK") {
 					if (this.y > this.destY) {
 						this.tileSpriteList[i].changeRow(1);
@@ -65,13 +99,23 @@ module.exports = Sprite = function(type, x, y) {
 					this.tileSpriteList[i].changeRow(3);	
 
 					if (this.tileSpriteList[i].imageCurrentCol == 0) {
-						this.pendingAnimation = null;
+						animationDone = true;
 					}
 				}
 			}
 
+			if (animationDone) {
+				this.pendingAnimation = null;
+			}
+
 			ctx.fillStyle = "red";
 			ctx.fillRect(this.x - 10, this.y - 25, 20 * (1.0 * this.life/this.maxLife), 5);
+
+			if (spriteUnit.realPlayer) {
+				ctx.fillStyle = "black";
+  				ctx.font = "10px Arial";
+				ctx.fillText(spriteUnit.playerName, this.x - 20, this.y + 50);
+			}
 		}
 	}
 }

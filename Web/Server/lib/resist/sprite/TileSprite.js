@@ -26,6 +26,10 @@ module.exports = TileSprite = function(imagePath, type, columns, rows) {
 		this.imageAnimationColMax = colMax;	
 	}
 
+	this.resetCol = function () {
+		this.imageCurrentCol = this.imageAnimationColMin;
+	}
+
 	this.tick = function (ctx, spritePosX, spritePosY) {
 		var now = new Date().getTime();
 		var delta = now - (this.time || now);

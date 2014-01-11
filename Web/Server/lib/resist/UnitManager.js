@@ -108,10 +108,18 @@ module.exports = UnitManager = function (callBack, isClient) {
     				this.unitList[j].sprite.life --;
 
     				if (this.hit(this.unitList[i], 1)) {
+    					if (i < j) {
+	    					j--;
+	    				}
+
     					i--;
     				}
 
     				if (this.hit(this.unitList[j], 1)) {
+    					if (j < i) {
+	    					i--;
+	    				}
+
     					j--;
     				}
     			}

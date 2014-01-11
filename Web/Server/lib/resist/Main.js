@@ -8,5 +8,5 @@ var Map = require('./Map/Map'),
 $(document).ready(function () {
 	var map = new Map();
 	MapLoader('../../client/maps/town.json', map);
-	start("Darknean", "Mage", map);
+	prepare(map);
 });

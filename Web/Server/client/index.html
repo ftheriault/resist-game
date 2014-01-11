@@ -10,8 +10,26 @@
 		<script src="/client/js/resist-canvas.js"></script>
 	</head>
 	<body>
-		<h3>Resist-Game : Coming soon...</h3>
+		<h3>Resist! How long can you survive against the monster waves ?</h3>
 		<h2 class="map-title">&nbsp;</h2>
-		<div class="canvas-container"><canvas width="576" height="576" id="resist-canvas"></canvas></div>
+		<div class="canvas-container">
+			<canvas width="576" height="576" id="resist-canvas"></canvas>
+
+			<div class="login-section">
+				<div>
+					<input type="text" id="player-name" placeholder="Name" />
+				</div>
+				<div>
+					<select id="player-class">
+						<option>Warrior</option>
+						<option>Mage</option>
+					</select>
+				</div>
+				<div>
+					<button onclick="start()">Enter</button>
+				</div>
+			</div>
+		</div>
+		
 	</body>
 </html>

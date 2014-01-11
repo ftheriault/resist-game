@@ -27,8 +27,13 @@ h2 {
 
 .canvas-container {
 	width: 576px;
-	height: 576px;
 	margin: 10px auto 0px auto;
 	border: 1px solid white;
 	background: black;
+}
+
+.login-section {
+	text-align: center;
+	padding-top: 10px;
+	border-bottom: 1px solid #777;
 }

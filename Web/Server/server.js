@@ -9,6 +9,7 @@ var sys = require("sys"),
   	io = require('socket.io').listen(app),
   	fs = require('fs');
 
+io.set('log level', 1); // reduce logging
 app.listen(8080);
 
 function handler (request, response) {

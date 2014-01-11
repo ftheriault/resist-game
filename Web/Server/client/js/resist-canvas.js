@@ -4,11 +4,21 @@ var networkConnector;
 var player;
 var ctxMap;
 var ctxImg;
+var map;
 
 toDigestEventList = new Array();
 receivedEventList = new Array();
 
-function start(playerName, playerClass, map) {
+function prepare(gameMap) {
+	map = gameMap;
+}
+
+function start() {
+
+	playerName = $("#player-name").val();
+	playerClass = $("#player-class").val();
+	$(".login-section").fadeOut();
+
 	player = new ResistUnit(playerName, new Sprite(playerClass, 50, 50), true);
 	player.sprite.loadTickImages();
 	ctx = document.getElementById("resist-canvas").getContext("2d");
@@ -84,6 +94,7 @@ function receiveEvent (eventType, spriteDestId, data) {
 			otherPlayer.sprite.destX = data["destX"];
 			otherPlayer.sprite.destY = data["destY"];
 			otherPlayer.id = spriteDestId;
+			otherPlayer.realPlayer = data["realPlayer"];
 			spriteList.push(otherPlayer);
 		}
 	}
@@ -101,7 +112,7 @@ function loop() {
 
     for (var i = 0; i < spriteList.length; i++) {
     	spriteList[i].digest(ctxMap);
-    	spriteList[i].sprite.tick(ctx);
+    	spriteList[i].sprite.tick(ctx, spriteList[i]);
     }
 }
 
