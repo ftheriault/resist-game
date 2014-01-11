@@ -64,10 +64,6 @@ module.exports = ResistUnit = function (playerName, sprite) {
 				this.sprite.y--;
 			}
 		}
-
-		if (this.realPlayer) {
-			console.log(this.sprite.x + "/" + this.sprite.y)
-		}
 	}
 
 	this.toArray = function() {		
