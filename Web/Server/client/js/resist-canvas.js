@@ -9,7 +9,7 @@ toDigestEventList = new Array();
 receivedEventList = new Array();
 
 function start(playerName, playerClass) {
-	player = new ResistPlayer(playerName, new Sprite(playerClass, 50, 50));
+	player = new ResistUnit(playerName, new Sprite(playerClass, 50, 50), true);
 	ctx = document.getElementById("resist-canvas").getContext("2d");
 	networkConnector = new NetworkConnector(receiveEvent, true);
 	networkConnector.initialize();
@@ -52,11 +52,12 @@ function receiveEvent (eventType, spriteDestId, data) {
 	}
 
 	if (!found && eventType != "delete-sprite") {
-		var otherPlayer = new ResistPlayer("Darknean", new Sprite(data["playerName"], data["posX"], data["posY"]));
+		var otherPlayer = new ResistUnit(data["playerName"], new Sprite(data["playerClass"], data["posX"], data["posY"]));
 		otherPlayer.destX = data["destX"];
 		otherPlayer.destY = data["destY"];
 		otherPlayer.id = spriteDestId;
 		spriteList.push(otherPlayer);
+		console.log("Added " + data["playerName"]);
 	}
 }
 
