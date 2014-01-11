@@ -18,3 +18,10 @@ h3 {
 	font-size: 2em;
 	color:white;
 }
+
+.canvas-container {
+	width: 500px;
+	height: 500px;
+	margin: 50px auto;
+	border:1px solid white;
+}
