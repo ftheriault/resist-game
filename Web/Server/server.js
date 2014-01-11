@@ -3,17 +3,16 @@ console.log("Starting Resist! server v0.1");
 console.log("---------------------------------");
 
 var sys = require("sys"),
-path = require("path"),
-url = require("url");
-
-var app = require('http').createServer(handler)
-  , io = require('socket.io').listen(app)
-  , fs = require('fs');
+	path = require("path"),
+	url = require("url"),
+	app = require('http').createServer(handler),
+  	io = require('socket.io').listen(app),
+  	fs = require('fs');
 
 app.listen(8080);
 
 function handler (request, response) {
-  var my_path = url.parse(request.url).pathname;
+	var my_path = url.parse(request.url).pathname;
     var full_path = path.join(process.cwd(),my_path);
 
     if (full_path.indexOf("index.html") >= 0 || request.url === "/") {
