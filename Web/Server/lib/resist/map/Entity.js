@@ -22,6 +22,14 @@ module.exports = Entity = function(entity) {
 		return coordinate || new Array();
 	}
 
+	this.getWidth = function() {
+		return width;
+	}
+
+	this.getHeight = function() {
+		return height;
+	}
+
 	this.isWalkable = function() {
 		return properties.WALKABLE;
 	}
