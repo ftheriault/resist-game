@@ -1,7 +1,10 @@
 module.exports = Entity = function(entity) {
 
 	var name = entity.name,
-		coordinate = entity.coordinate,
+		coordinate = {
+			x: entity.coordinate[0],
+			y: entity.coordinate[1]
+		},
 		width = entity.width,
 		height = entity.height,
 		type = entity.type,
