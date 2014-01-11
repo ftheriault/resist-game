@@ -50,36 +50,82 @@ function handler (request, response) {
 	}
 }
 
-io.sockets.on('connection', function (socket) {
-	socket.on('credentials', function (data) {
-		console.log("New player connection : " + data["playerName"]);
-
-		socket.emit("logged", {
-			response : "OK"
-		});
-	});
-});
-
-
 // =================================================
 // Game logic
 // -------------------------------------------------
+
 var Map = require('./lib/resist/Map/Map'),
 	MapLoader = require('./lib/resist/Map/MapLoader'),
 	town = new Map();
 
 MapLoader('./client/maps/town.json', town);
 
+var ResistPlayer = require("./lib/resist/ResistPlayer");
+var NetworkConnector = require("./lib/resist/NetworkConnector");
+var Sprite = require("./lib/resist/sprite/Sprite");
+
 var playerList = new Array();
 var time;
+var playerId = 0;
 
+io.sockets.on('connection', function (socket) {
+
+	// When connecting, send credentials and notice other players
+	socket.on("send-credentials", function (data) {
+		var player = new ResistPlayer(data["playerName"], new Sprite(data["playerClass"], 50, 50), false);
+		player.id = playerId++;
+		player.connector = new NetworkConnector(receiveEvent, false);
+		player.connector.setSocket(socket);
+
+		console.log("info", "New player connection : " + player.playerName);
+
+		socket.emit("credentials-result", {
+			id : player.id
+		});
+
+		// notify everybody of the new player
+		receiveEvent("new-sprite", player.id, player.toArray());
+
+		playerList.push(player);
+
+		// notify the player of all the sprites
+		for (var i = 0; i < playerList.length; i++) {
+			player.connector.sendEvent("new-sprite", playerList[i].id, playerList[i].toArray());
+		}
+
+		socket.on('disconnect', function () {
+			for (var i = 0; i < playerList.length; i++) {
+				if (playerList[i].id == player.id) {
+					playerList.splice(i, 1);
+					break;
+				}
+			}
+
+			receiveEvent("delete-sprite", player.id, player.toArray());
+		});
+	});
+});
+
+/*
+ * Must dispatch an event to players and client players
+ */
+function receiveEvent(eventType, spriteDestId, data) {	
+	for (var i = 0; i < playerList.length; i++) {
+		playerList[i].toDigestEventList.push(new Array(eventType, spriteDestId, data));
+		playerList[i].connector.sendEvent(eventType, spriteDestId, data);
+	}
+}
+
+// -------------------------------------------------
+// Game loop
+// -------------------------------------------------
 setInterval(loop, 25);
 
 function loop() {
     var now = new Date().getTime();
     var delta = now - (time || now);
     time = now;
-
-    // loop logic here
-
+    for (var i = 0; i < playerList.length; i++) {
+    	playerList[i].digest();
+    }
 }
