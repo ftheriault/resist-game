@@ -4,7 +4,6 @@ module.exports = ResistUnit = function (playerName, sprite) {
 	this.sprite = sprite;
 	this.id = -1;
 	this.toDigestEventList = new Array();
-	this.isRealPlayer = false;
 
 	this.destX = sprite.x;
 	this.destY = sprite.y;
@@ -23,7 +22,7 @@ module.exports = ResistUnit = function (playerName, sprite) {
 					this.destX = data[0];
 					this.destY = data[1];
 				}
-				else if (eventType === "sprite-update") {
+				else if (eventType === "sprite-update" || eventType === "new-sprite") {
 					this.destX = data["destX"];
 					this.destY = data["destY"];
 					this.sprite.x = data["posX"];
@@ -61,9 +60,13 @@ module.exports = ResistUnit = function (playerName, sprite) {
 			}
 		}
 		else if (this.sprite.y > this.destY) {
-			if (!ctxMap.testCollision(this.sprite.y - 1, this.sprite.y - 1)) {
+			if (!ctxMap.testCollision(this.sprite.x - 1, this.sprite.y - 1)) {
 				this.sprite.y--;
 			}
+		}
+
+		if (this.realPlayer) {
+			console.log(this.sprite.x + "/" + this.sprite.y)
 		}
 	}
 

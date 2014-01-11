@@ -7,8 +7,8 @@
 		{
 			"name": "Well",
 			"coordinate": [201, 224],
-			"width": 32,
-			"height": 97,
+			"width": 150,
+			"height": 120,
 			"type" : "STRUCTURE"
 		}
 	]

@@ -80,6 +80,10 @@ module.exports = UnitManager = function (callBack, isClient) {
     				if (this.unitList[j].realPlayer != this.unitList[i].realPlayer &&
 	    				this.mathUtils.distance(this.unitList[i].sprite.x, this.unitList[i].sprite.y, this.unitList[j].sprite.x, this.unitList[j].sprite.y) < distance) {
 	    				this.unitList[j].sprite.life -= 30;
+
+	    				if (this.unitList[j].sprite.life < 0) {
+	    					this.unitList[j].sprite.life = 0;
+	    				}
 	    			
 	    				this.broadCastEvent("hit", this.unitList[j].id, {life : this.unitList[j].sprite.life});
 	    			}
@@ -94,6 +98,10 @@ module.exports = UnitManager = function (callBack, isClient) {
     				this.mathUtils.distance(this.unitList[i].sprite.x, this.unitList[i].sprite.y, this.unitList[j].sprite.x, this.unitList[j].sprite.y) < meleeAttackDistance) {
     				this.unitList[i].sprite.life --;
     				this.unitList[j].sprite.life --;
+
+    				if (this.unitList[j].sprite.life < 0) {
+    					this.unitList[j].sprite.life = 0;
+    				}
     				
     				this.broadCastEvent("hit", this.unitList[i].id, {life : this.unitList[i].sprite.life});
     				this.broadCastEvent("hit", this.unitList[j].id, {life : this.unitList[j].sprite.life});
