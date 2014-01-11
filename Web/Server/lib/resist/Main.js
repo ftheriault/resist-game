@@ -2,7 +2,7 @@ var Map = require('./Map/Map'),
 	MapLoader = require('./Map/MapLoaderClient'),
 	town = new Map(),
 	NetworkConnector = require('./NetworkConnector'),
-	ResistPlayer = require('./ResistPlayer'),
+	ResistUnit = require('./ResistUnit'),
 	Sprite = require('./sprite/Sprite');
 
 $(document).ready(function () {
