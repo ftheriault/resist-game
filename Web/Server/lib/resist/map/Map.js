@@ -39,4 +39,8 @@ module.exports = Map = function() {
 	this.getImage = function() {
 		return image_;
 	}
+
+	this.testCollision = function(x, y) {
+		return false;
+	}
 }
