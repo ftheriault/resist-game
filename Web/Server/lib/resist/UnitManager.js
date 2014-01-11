@@ -1,6 +1,8 @@
 module.exports = UnitManager = function (callBack, isClient) {
 	var unitManager = this;
 	this.unitList = new Array();
+	var MathUtils = require("./MathUtils");
+	this.mathUtils = new MathUtils();
 
 	this.createPlayerUnit = function (socket, data) {
 		player = this.createUnit(data["playerName"], new Sprite(data["playerClass"], 50, 50), true);
@@ -62,6 +64,26 @@ module.exports = UnitManager = function (callBack, isClient) {
 				this.unitList[i].connector.sendEvent(eventType, spriteDestId, data);
 			}
 		}
+	}
+
+	this.digest = function () {
+    	for (var i = 0; i < this.unitList.length; i++) {
+    		this.unitList[i].digest();
+
+    		// Auto attack
+    		for (var j = 0; j < this.unitList.length; j++) {
+
+    			// Melee attack
+    			if (this.unitList[j].realPlayer != this.unitList[i].realPlayer &&
+    				this.mathUtils.distance(this.unitList[i].sprite.x, this.unitList[i].sprite.y, this.unitList[j].sprite.x, this.unitList[j].sprite.y) < 20) {
+    				this.unitList[i].sprite.life --;
+    				this.unitList[j].sprite.life --;
+    				
+    				this.broadCastEvent("attack", this.unitList[i].id, {life : this.unitList[i].sprite.life});
+    				this.broadCastEvent("attack", this.unitList[j].id, {life : this.unitList[i].sprite.life});
+    			}
+    		}
+    	}
 	}
 }
 

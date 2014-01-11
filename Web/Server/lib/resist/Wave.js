@@ -6,7 +6,7 @@ module.exports = Wave = function (playerList, gameWidth, gameHeight, unitManager
 	this.spriteList = new Array();
 
 	this.initialize = function () {
-		for (var i = 0; i < this.level * 10; i++) {
+		for (var i = 0; i < this.level * 5; i++) {
 			var newUnit = this.unitManager.createUnit("Skeleton" + i, new Sprite("Skeleton", Math.floor(Math.random() * this.gameWidth), 0), false, true);
 			this.spriteList.push(newUnit);
 		}

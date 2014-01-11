@@ -20,11 +20,15 @@ module.exports = ResistUnit = function (playerName, sprite) {
 					this.destX = data[0];
 					this.destY = data[1];
 				}
-				else if ("sprite-update") {
+				else if (eventType === "sprite-update") {
 					this.destX = data["destX"];
 					this.destY = data["destY"];
 					this.sprite.x = data["posX"];
 					this.sprite.y = data["posY"];
+					this.sprite.life = data["life"];
+				}
+				else if (eventType === "attack") {
+					this.sprite.life = data["life"];
 				}
 			}
 		}
@@ -50,6 +54,7 @@ module.exports = ResistUnit = function (playerName, sprite) {
 		var data = {
 			posX : this.sprite.x,
 			posY : this.sprite.y,
+			life : this.sprite.life,
 			destX : this.destX,
 			destY : this.destY,
 			playerName : this.playerName,

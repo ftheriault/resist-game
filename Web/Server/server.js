@@ -113,9 +113,6 @@ function loop() {
     	}
 
     	currentWave.digest();
-
-    	for (var i = 0; i < unitManager.unitList.length; i++) {
-    		unitManager.unitList[i].digest();
-    	}
+    	unitManager.digest();
     }
 }

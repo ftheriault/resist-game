@@ -18,10 +18,13 @@ function start(playerName, playerClass, map) {
 	spriteList = new Array();
 
 	document.getElementById("resist-canvas").onclick = function (event) {
-		if (player.id != -1) {
-			networkConnector.sendEvent("moveTo", networkConnector.connectorClientId, new Array(event.pageX - document.getElementById("resist-canvas").offsetLeft,
-					  event.pageY - document.getElementById("resist-canvas").offsetTop));
+		if (player.id == -1) {
+			player.id = networkConnector.connectorClientId;
 		}
+		
+		networkConnector.sendEvent("moveTo", networkConnector.connectorClientId, new Array(event.pageX - document.getElementById("resist-canvas").offsetLeft,
+					  event.pageY - document.getElementById("resist-canvas").offsetTop));
+			
 	}
 
 	// draw map
@@ -45,8 +48,8 @@ function start(playerName, playerClass, map) {
 function receiveEvent (eventType, spriteDestId, data) {
 	var found = false;
 
-	if (player.id != -1) {
-		playerId = networkConnector.connectorClientId;
+	if (player.id == -1) {
+		player.id = networkConnector.connectorClientId;
 	}
 
 	for (var i = 0; i < spriteList.length; i++) {
@@ -72,7 +75,6 @@ function receiveEvent (eventType, spriteDestId, data) {
 		otherPlayer.destY = data["destY"];
 		otherPlayer.id = spriteDestId;
 		spriteList.push(otherPlayer);
-		console.log("Added " + data["playerName"]);
 	}
 }
 
