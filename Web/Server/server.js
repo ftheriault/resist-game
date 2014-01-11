@@ -113,6 +113,6 @@ function loop() {
     	}
 
     	currentWave.digest();
-    	unitManager.digest();
+    	unitManager.digest(ctxMap);
     }
 }

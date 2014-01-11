@@ -23,8 +23,12 @@ function start(playerName, playerClass, map) {
 		}
 		
 		networkConnector.sendEvent("moveTo", networkConnector.connectorClientId, new Array(event.pageX - document.getElementById("resist-canvas").offsetLeft,
-					  event.pageY - document.getElementById("resist-canvas").offsetTop));
-			
+					  event.pageY - document.getElementById("resist-canvas").offsetTop));			
+	}
+
+	document.getElementById("resist-canvas").oncontextmenu = function (event) {
+		event.preventDefault();
+		networkConnector.sendEvent("custom-attack", networkConnector.connectorClientId, "special-attack-1");	
 	}
 
 	// draw map
@@ -89,7 +93,7 @@ function loop() {
 	}
 
     for (var i = 0; i < spriteList.length; i++) {
-    	spriteList[i].digest();
+    	spriteList[i].digest(ctxMap);
     	spriteList[i].sprite.tick(ctx);
     }
 }

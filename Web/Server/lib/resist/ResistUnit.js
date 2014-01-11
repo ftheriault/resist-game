@@ -8,8 +8,11 @@ module.exports = ResistUnit = function (playerName, sprite) {
 
 	this.destX = sprite.x;
 	this.destY = sprite.y;
+	this.customAttack = null;
 
-	this.digest = function() {
+	this.digest = function(ctxMap) {
+		this.customAttack = null;
+
 		for (var i = 0; i < this.toDigestEventList.length; i++) {
 			var eventType = this.toDigestEventList[i][0];
 			var destSpriteId = this.toDigestEventList[i][1];
@@ -27,8 +30,14 @@ module.exports = ResistUnit = function (playerName, sprite) {
 					this.sprite.y = data["posY"];
 					this.sprite.life = data["life"];
 				}
-				else if (eventType === "attack") {
+				else if (eventType === "hit") {
 					this.sprite.life = data["life"];
+				}
+				else if (eventType === "visual-effect") {
+					this.sprite.addEffect(data);
+				}
+				else if (eventType === "custom-attack") {
+					this.customAttack = data;
 				}
 			}
 		}
@@ -36,17 +45,25 @@ module.exports = ResistUnit = function (playerName, sprite) {
 		this.toDigestEventList = new Array();
 
 		if (this.sprite.x < this.destX) {
-			this.sprite.x++;
+			if (!ctxMap.testCollision(this.sprite.x + 1, this.sprite.y)) {
+				this.sprite.x++;
+			}
 		}
 		else if (this.sprite.x > this.destX) {
-			this.sprite.x--;
+			if (!ctxMap.testCollision(this.sprite.x - 1, this.sprite.y)) {
+				this.sprite.x--;
+			}
 		}
 
 		if (this.sprite.y < this.destY) {
-			this.sprite.y++;
+			if (!ctxMap.testCollision(this.sprite.x, this.sprite.y + 1)) {
+				this.sprite.y++;
+			}
 		}
 		else if (this.sprite.y > this.destY) {
-			this.sprite.y--;
+			if (!ctxMap.testCollision(this.sprite.y - 1, this.sprite.y - 1)) {
+				this.sprite.y--;
+			}
 		}
 	}
 

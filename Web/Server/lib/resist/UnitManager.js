@@ -66,21 +66,37 @@ module.exports = UnitManager = function (callBack, isClient) {
 		}
 	}
 
-	this.digest = function () {
+	this.digest = function (ctxMap) {
+		var meleeAttackDistance = 20;
+
     	for (var i = 0; i < this.unitList.length; i++) {
-    		this.unitList[i].digest();
+    		this.unitList[i].digest(ctxMap);
+
+    		if (this.unitList[i].customAttack == "special-attack-1") {
+    			var distance = 100;
+	    		this.broadCastEvent("visual-effect", this.unitList[i].id, "special-attack-1");
+
+    			for (var j = 0; j < this.unitList.length; j++) {
+    				if (this.unitList[j].realPlayer != this.unitList[i].realPlayer &&
+	    				this.mathUtils.distance(this.unitList[i].sprite.x, this.unitList[i].sprite.y, this.unitList[j].sprite.x, this.unitList[j].sprite.y) < distance) {
+	    				this.unitList[j].sprite.life -= 30;
+	    			
+	    				this.broadCastEvent("hit", this.unitList[j].id, {life : this.unitList[j].sprite.life});
+	    			}
+	    		}
+    		}
 
     		// Auto attack
     		for (var j = 0; j < this.unitList.length; j++) {
 
     			// Melee attack
     			if (this.unitList[j].realPlayer != this.unitList[i].realPlayer &&
-    				this.mathUtils.distance(this.unitList[i].sprite.x, this.unitList[i].sprite.y, this.unitList[j].sprite.x, this.unitList[j].sprite.y) < 20) {
+    				this.mathUtils.distance(this.unitList[i].sprite.x, this.unitList[i].sprite.y, this.unitList[j].sprite.x, this.unitList[j].sprite.y) < meleeAttackDistance) {
     				this.unitList[i].sprite.life --;
     				this.unitList[j].sprite.life --;
     				
-    				this.broadCastEvent("attack", this.unitList[i].id, {life : this.unitList[i].sprite.life});
-    				this.broadCastEvent("attack", this.unitList[j].id, {life : this.unitList[i].sprite.life});
+    				this.broadCastEvent("hit", this.unitList[i].id, {life : this.unitList[i].sprite.life});
+    				this.broadCastEvent("hit", this.unitList[j].id, {life : this.unitList[j].sprite.life});
     			}
     		}
     	}
