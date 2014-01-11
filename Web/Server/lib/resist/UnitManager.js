@@ -5,9 +5,9 @@ module.exports = UnitManager = function (callBack, isClient) {
 	this.mathUtils = new MathUtils();
 
 	this.createPlayerUnit = function (socket, data) {
-		player = this.createUnit(data["playerName"], new Sprite(data["playerClass"], 50, 50), true);
+		player = this.createUnit(data["playerName"], new Sprite(data["playerClass"], 250, 450), true);
 		player.connector = new NetworkConnector(function (eventType, spriteDestId, data) {
-			unitManager.broadCastEvent(eventType, spriteDestId, data);
+			unitManager.broadCastEvent(eventType, spriteDestId, data, player);
 		}, false);
 		player.connector.setSocket(socket);
 
@@ -56,12 +56,14 @@ module.exports = UnitManager = function (callBack, isClient) {
 	/*
 	 * Must dispatch an event to players and client players
 	 */
-	this.broadCastEvent = function(eventType, spriteDestId, data) {	
-		for (var i = 0; i < this.unitList.length; i++) {
-			this.unitList[i].toDigestEventList.push(new Array(eventType, spriteDestId, data));
+	this.broadCastEvent = function(eventType, spriteDestId, data, sourceUnit) {	
+		if (typeof sourceUnit == "undefined" || !sourceUnit.realPlayer || sourceUnit.sprite.life > 0) {
+			for (var i = 0; i < this.unitList.length; i++) {
+				this.unitList[i].toDigestEventList.push(new Array(eventType, spriteDestId, data));
 
-			if (this.unitList[i].realPlayer) {
-				this.unitList[i].connector.sendEvent(eventType, spriteDestId, data);
+				if (this.unitList[i].realPlayer) {
+					this.unitList[i].connector.sendEvent(eventType, spriteDestId, data);
+				}
 			}
 		}
 	}
@@ -74,18 +76,23 @@ module.exports = UnitManager = function (callBack, isClient) {
 
     		if (this.unitList[i].customAttack == "special-attack-1") {
     			var distance = 100;
+    			this.unitList[i].sprite.destX = this.unitList[i].sprite.x;
+    			this.unitList[i].sprite.destY = this.unitList[i].sprite.y;
+    			this.broadCastEvent("sprite-update", this.unitList[i].id, this.unitList[i].sprite.destX = this.unitList[i].toArray());
 	    		this.broadCastEvent("visual-effect", this.unitList[i].id, "special-attack-1");
 
     			for (var j = 0; j < this.unitList.length; j++) {
     				if (this.unitList[j].realPlayer != this.unitList[i].realPlayer &&
 	    				this.mathUtils.distance(this.unitList[i].sprite.x, this.unitList[i].sprite.y, this.unitList[j].sprite.x, this.unitList[j].sprite.y) < distance) {
-	    				this.unitList[j].sprite.life -= 30;
+	    				
 
-	    				if (this.unitList[j].sprite.life < 0) {
-	    					this.unitList[j].sprite.life = 0;
+	    				if (this.hit(this.unitList[j], 30)) {
+	    					if (j < i) {
+	    						i--;
+	    					}
+
+	    					j--;
 	    				}
-	    			
-	    				this.broadCastEvent("hit", this.unitList[j].id, {life : this.unitList[j].sprite.life});
 	    			}
 	    		}
     		}
@@ -95,18 +102,48 @@ module.exports = UnitManager = function (callBack, isClient) {
 
     			// Melee attack
     			if (this.unitList[j].realPlayer != this.unitList[i].realPlayer &&
+    				this.unitList[i].sprite.life > 0 && this.unitList[j].sprite.life > 0 &&
     				this.mathUtils.distance(this.unitList[i].sprite.x, this.unitList[i].sprite.y, this.unitList[j].sprite.x, this.unitList[j].sprite.y) < meleeAttackDistance) {
     				this.unitList[i].sprite.life --;
     				this.unitList[j].sprite.life --;
 
-    				if (this.unitList[j].sprite.life < 0) {
-    					this.unitList[j].sprite.life = 0;
+    				if (this.hit(this.unitList[i], 1)) {
+    					i--;
     				}
-    				
-    				this.broadCastEvent("hit", this.unitList[i].id, {life : this.unitList[i].sprite.life});
-    				this.broadCastEvent("hit", this.unitList[j].id, {life : this.unitList[j].sprite.life});
+
+    				if (this.hit(this.unitList[j], 1)) {
+    					j--;
+    				}
     			}
     		}
+    	}
+	}
+
+	this.hit = function (resistUnit, amount) {
+		var dead = false;
+		resistUnit.sprite.life -= amount;
+
+		if (resistUnit.sprite.life <= 0) {
+			resistUnit.sprite.life = 0;
+
+			if (!resistUnit.realPlayer) {
+				this.deleteUnit(resistUnit.id);
+				dead = true;
+			}
+			else {
+    			this.broadCastEvent("hit", resistUnit.id, {life : resistUnit.sprite.life});
+			}
+		}
+		else {
+    		this.broadCastEvent("hit", resistUnit.id, {life : resistUnit.sprite.life});
+		}
+		
+		return dead;
+	}
+
+	this.newWave = function () {
+    	for (var i = 0; i < this.unitList.length; i++) {
+    		this.unitList[i].sprite.life = this.unitList[i].sprite.maxLife;
     	}
 	}
 }

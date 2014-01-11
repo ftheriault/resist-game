@@ -39,6 +39,11 @@ module.exports = ResistUnit = function (playerName, sprite) {
 			}
 		}
 
+		if (this.sprite.life == 0) {
+			this.sprite.destX = this.sprite.x;
+			this.sprite.destY = this.sprite.y;
+		}
+
 		this.toDigestEventList = new Array();
 
 		if (this.sprite.x < this.sprite.destX) {
@@ -53,7 +58,7 @@ module.exports = ResistUnit = function (playerName, sprite) {
 		}
 
 		if (this.sprite.y < this.sprite.destY) {
-			if (!ctxMap.testCollision(this.sprite.x, this.sprite.y + 1)) {
+			if (!ctxMap.testCollision(this.sprite.x, this.sprite.y + 1) || this.sprite.y < 1) {
 				this.sprite.y++;
 			}
 		}

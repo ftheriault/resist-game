@@ -1,4 +1,5 @@
-module.exports = TileSprite = function(imagePath, columns, rows) {
+module.exports = TileSprite = function(imagePath, type, columns, rows) {
+	this.type = type; // Types are : WALK, ATTACK
 	this.imageList = new Array();
 	this.tickTime = 0;
 	this.tickDrawFrameInterval = 0;

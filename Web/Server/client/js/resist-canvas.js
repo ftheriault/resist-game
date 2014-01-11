@@ -53,34 +53,39 @@ function start(playerName, playerClass, map) {
 function receiveEvent (eventType, spriteDestId, data) {
 	var found = false;
 
-	if (player.id == -1) {
-		player.id = networkConnector.connectorClientId;
+	if (eventType == "wave-coming") {
+		console.log("starting wave in " + data);
 	}
+	else {
+		if (player.id == -1) {
+			player.id = networkConnector.connectorClientId;
+		}
 
-	for (var i = 0; i < spriteList.length; i++) {
-		if (spriteList[i].id == spriteDestId || spriteDestId == -1) {
-			if (eventType == "delete-sprite") {
-				spriteList.splice(i, 1);
-				break;
-			}
-			else {
-				if (data["posX"] != null) {
-					spriteList[i].sprite.x = data["posX"];
-					spriteList[i].sprite.y = data["posY"];
+		for (var i = 0; i < spriteList.length; i++) {
+			if (spriteList[i].id == spriteDestId || spriteDestId == -1) {
+				if (eventType == "delete-sprite") {
+					spriteList.splice(i, 1);
+					break;
 				}
-				spriteList[i].toDigestEventList.push(new Array(eventType, spriteDestId, data));
-				found = true;
+				else {
+					if (data["posX"] != null) {
+						spriteList[i].sprite.x = data["posX"];
+						spriteList[i].sprite.y = data["posY"];
+					}
+					spriteList[i].toDigestEventList.push(new Array(eventType, spriteDestId, data));
+					found = true;
+				}
 			}
 		}
-	}
 
-	if (!found && eventType != "delete-sprite") {
-		var otherPlayer = new ResistUnit(data["playerName"], new Sprite(data["playerClass"], data["posX"], data["posY"]));
-		otherPlayer.sprite.loadTickImages();
-		otherPlayer.sprite.destX = data["destX"];
-		otherPlayer.sprite.destY = data["destY"];
-		otherPlayer.id = spriteDestId;
-		spriteList.push(otherPlayer);
+		if (!found && eventType != "delete-sprite") {
+			var otherPlayer = new ResistUnit(data["playerName"], new Sprite(data["playerClass"], data["posX"], data["posY"]));
+			otherPlayer.sprite.loadTickImages();
+			otherPlayer.sprite.destX = data["destX"];
+			otherPlayer.sprite.destY = data["destY"];
+			otherPlayer.id = spriteDestId;
+			spriteList.push(otherPlayer);
+		}
 	}
 }
 

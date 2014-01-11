@@ -104,15 +104,19 @@ function loop() {
     if (unitManager.unitList.length == 0) {
     	if (currentWave != null) {
     		currentWave.destroy();
+    		currentWave = null;
     	}
     }
     else {
     	if (currentWave == null) {
-    		currentWave = new Wave(unitManager.unitList, 500, 500, unitManager);
+    		currentWave = new Wave(unitManager.unitList, 576, 576, unitManager, 5);
     		currentWave.initialize();
     	}
 
-    	currentWave.digest();
+    	if (currentWave.digest()) {
+    		currentWave = null;
+    	}
+
     	unitManager.digest(ctxMap);
     }
 }
