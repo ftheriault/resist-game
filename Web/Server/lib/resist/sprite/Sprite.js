@@ -11,7 +11,7 @@ module.exports = Sprite = function(type, x, y) {
 
 	this.loadTickImages = function() {
 		if (this.type == "Warrior" || this.type == "Mage" || this.type == "Skeleton") {
-			var imageSprite = new TileSprite("/client/images/sprites/skeleton/walk.png", 9, 4);
+			var imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk.png", 9, 4);
 			imageSprite.changeColumnInterval(1, 8);
 			this.tileSpriteList.push(imageSprite);
 		}
