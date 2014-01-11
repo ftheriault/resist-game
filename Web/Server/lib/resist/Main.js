@@ -5,3 +5,12 @@ var Map = require('./Map/Map'),
 	town = new Map();
 
 MapLoader('../../client/maps/town.json', town);
+
+(function drawMap() {
+	if (town && town.isReady()) {
+		$('.map-title').text(town.getName());
+	}
+	else {
+		setTimeout(drawMap, 1000);
+	}
+})();

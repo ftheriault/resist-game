@@ -15,10 +15,14 @@ module.exports = Map = function() {
 		for(i in tiles) {
 			tiles_.push(new Tile(tiles[i]));
 		}
-		ready = true;
+		ready_ = true;
 	}
 
 	this.isReady = function() {
-		return ready;
+		return ready_;
+	}
+
+	this.getName = function() {
+		return name_;
 	}
 }

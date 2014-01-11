@@ -5,19 +5,23 @@
 	"tiles": [
 		{
 			"coordinate": [0,0],
-			"type": "GROUND"
+			"type": "GROUND",
+			"image": "Scenery/Village 1/Village_01.jpg"
 		},
 		{
 			"coordinate": [0,1],
-			"type": "ENTITY"
+			"type": "ENTITY",
+			"image": "Scenery/Village 1/Village_02.jpg"
 		},
 		{
 			"coordinate": [1,0],
-			"type": "GROUND"
+			"type": "GROUND",
+			"image": "Scenery/Village 1/Village_03.jpg"
 		},
 		{
 			"coordinate": [1,1],
-			"type": "GROUND"
+			"type": "GROUND",
+			"image": "Scenery/Village 1/Village_04.jpg"
 		}
 	]
 }

@@ -1,7 +1,8 @@
 module.exports = Tile = function(tile) {
 
 	var coordinate = tile.coordinate,
-	properties = { WALKABLE: false };
+		image = tile.image,
+		properties = { WALKABLE: false };
 
 	switch(tile.type) {
 		case 'GROUND':
@@ -16,6 +17,10 @@ module.exports = Tile = function(tile) {
 	}
 
 	this.isWalkable = function() {
-		return properties.WALKABLE || false;
+		return properties.WALKABLE;
+	}
+
+	this.getImage = function() {
+		return image;
 	}
 }

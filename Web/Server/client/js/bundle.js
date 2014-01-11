@@ -7,6 +7,14 @@ var Map = require('./Map/Map'),
 
 MapLoader('../../client/maps/town.json', town);
 
+(function drawMap() {
+	if (town && town.isReady()) {
+		$('.map-title').text(town.getName());
+	}
+	else {
+		setTimeout(drawMap, 1000);
+	}
+})();
 },{"./Map/Map":2,"./Map/MapLoaderClient":3,"./Resist":5}],2:[function(require,module,exports){
 var Tile = require('./Tile');
 
@@ -23,15 +31,17 @@ module.exports = Map = function() {
 		width_ = width;
 		height_ = height;
 		for(i in tiles) {
-			console.log(tiles[i]);
 			tiles_.push(new Tile(tiles[i]));
 		}
-		console.log(this.tiles[1].getCoordinate(), this.tiles[1].isWalkable());
-		ready = true;
+		ready_ = true;
 	}
 
 	this.isReady = function() {
-		return ready;
+		return ready_;
+	}
+
+	this.getName = function() {
+		return name_;
 	}
 }
 },{"./Tile":4}],3:[function(require,module,exports){
@@ -46,17 +56,16 @@ module.exports = MapLoaderClient = function(filePath, map) {
 },{}],4:[function(require,module,exports){
 module.exports = Tile = function(tile) {
 
-	console.log(tile);
-
 	var coordinate = tile.coordinate,
-	properties = { WALKABLE: false };
+		image = tile.image,
+		properties = { WALKABLE: false };
 
 	switch(tile.type) {
 		case 'GROUND':
-		properties.WALKABLE = true;
-		break;
+			properties.WALKABLE = true;
+			break;
 		default:
-		break;
+			break;
 	}
 
 	this.getCoordinate = function() {
@@ -64,7 +73,11 @@ module.exports = Tile = function(tile) {
 	}
 
 	this.isWalkable = function() {
-		return properties.WALKABLE || false;
+		return properties.WALKABLE;
+	}
+
+	this.getImage = function() {
+		return image;
 	}
 }
 },{}],5:[function(require,module,exports){
