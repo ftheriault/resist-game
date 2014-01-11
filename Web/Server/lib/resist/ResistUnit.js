@@ -5,8 +5,6 @@ module.exports = ResistUnit = function (playerName, sprite) {
 	this.id = -1;
 	this.toDigestEventList = new Array();
 
-	this.destX = sprite.x;
-	this.destY = sprite.y;
 	this.customAttack = null;
 
 	this.digest = function(ctxMap) {
@@ -19,12 +17,12 @@ module.exports = ResistUnit = function (playerName, sprite) {
 
 			if (data != null && this.id == destSpriteId) {
 				if (eventType === "moveTo") {
-					this.destX = data[0];
-					this.destY = data[1];
+					this.sprite.destX = data[0];
+					this.sprite.destY = data[1];
 				}
 				else if (eventType === "sprite-update" || eventType === "new-sprite") {
-					this.destX = data["destX"];
-					this.destY = data["destY"];
+					this.sprite.destX = data["destX"];
+					this.sprite.destY = data["destY"];
 					this.sprite.x = data["posX"];
 					this.sprite.y = data["posY"];
 					this.sprite.life = data["life"];
@@ -43,23 +41,23 @@ module.exports = ResistUnit = function (playerName, sprite) {
 
 		this.toDigestEventList = new Array();
 
-		if (this.sprite.x < this.destX) {
+		if (this.sprite.x < this.sprite.destX) {
 			if (!ctxMap.testCollision(this.sprite.x + 1, this.sprite.y)) {
 				this.sprite.x++;
 			}
 		}
-		else if (this.sprite.x > this.destX) {
+		else if (this.sprite.x > this.sprite.destX) {
 			if (!ctxMap.testCollision(this.sprite.x - 1, this.sprite.y)) {
 				this.sprite.x--;
 			}
 		}
 
-		if (this.sprite.y < this.destY) {
+		if (this.sprite.y < this.sprite.destY) {
 			if (!ctxMap.testCollision(this.sprite.x, this.sprite.y + 1)) {
 				this.sprite.y++;
 			}
 		}
-		else if (this.sprite.y > this.destY) {
+		else if (this.sprite.y > this.sprite.destY) {
 			if (!ctxMap.testCollision(this.sprite.x - 1, this.sprite.y - 1)) {
 				this.sprite.y--;
 			}
@@ -71,10 +69,10 @@ module.exports = ResistUnit = function (playerName, sprite) {
 			posX : this.sprite.x,
 			posY : this.sprite.y,
 			life : this.sprite.life,
-			destX : this.destX,
-			destY : this.destY,
+			destX : this.sprite.destX,
+			destY : this.sprite.destY,
 			playerName : this.playerName,
-			playerClass : this.playerClass
+			playerClass : this.sprite.type
 		}
 
 		return data;

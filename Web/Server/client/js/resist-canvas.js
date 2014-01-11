@@ -10,6 +10,7 @@ receivedEventList = new Array();
 
 function start(playerName, playerClass, map) {
 	player = new ResistUnit(playerName, new Sprite(playerClass, 50, 50), true);
+	player.sprite.loadTickImages();
 	ctx = document.getElementById("resist-canvas").getContext("2d");
 	networkConnector = new NetworkConnector(receiveEvent, true);
 	networkConnector.initialize();
@@ -75,8 +76,9 @@ function receiveEvent (eventType, spriteDestId, data) {
 
 	if (!found && eventType != "delete-sprite") {
 		var otherPlayer = new ResistUnit(data["playerName"], new Sprite(data["playerClass"], data["posX"], data["posY"]));
-		otherPlayer.destX = data["destX"];
-		otherPlayer.destY = data["destY"];
+		otherPlayer.sprite.loadTickImages();
+		otherPlayer.sprite.destX = data["destX"];
+		otherPlayer.sprite.destY = data["destY"];
 		otherPlayer.id = spriteDestId;
 		spriteList.push(otherPlayer);
 	}

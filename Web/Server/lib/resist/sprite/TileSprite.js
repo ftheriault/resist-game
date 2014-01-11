@@ -1,0 +1,62 @@
+module.exports = TileSprite = function(imagePath, columns, rows) {
+	this.imageList = new Array();
+	this.tickTime = 0;
+	this.tickDrawFrameInterval = 0;
+	this.tickRefreshInterval = 100;
+
+	var image = new Image();
+	image.src = imagePath;
+	this.imageList.push(image);
+	this.imageTileColCount = columns;
+	this.imageTileRowCount = rows;
+	this.imageCurrentCol = 0;
+	this.imageCurrentRow = 0;
+	this.imageAnimationColMin = 0;
+	this.imageAnimationColMax = 0;
+
+	// starts at 1
+	this.changeRow = function(row) {
+		this.imageCurrentRow = row - 1;
+	}
+
+	// starts at 1
+	this.changeColumnInterval = function (colMin, colMax) {
+		this.imageAnimationColMin = colMin - 1;	
+		this.imageAnimationColMax = colMax;	
+	}
+
+	this.tick = function (ctx, spritePosX, spritePosY) {
+		var now = new Date().getTime();
+		var delta = now - (this.time || now);
+		this.time = now;
+		this.tickDrawFrameInterval += delta;
+
+		if (this.tickDrawFrameInterval > this.tickRefreshInterval) {
+			this.tickDrawFrameInterval = 0;
+		}
+
+		for (var i = 0; i < this.imageList.length;i++) {
+			if (this.imageList[i].complete) {
+				ctx.drawImage(this.imageList[i], 
+							  this.imageList[i].width/this.imageTileColCount * this.imageCurrentCol, 
+							  this.imageList[i].height/this.imageTileRowCount * this.imageCurrentRow,
+							  this.imageList[i].width/this.imageTileColCount, 
+							  this.imageList[i].height/this.imageTileRowCount, 
+							  spritePosX - this.imageList[i].width/this.imageTileColCount/2, 
+							  spritePosY - this.imageList[i].height/this.imageTileRowCount/2, 
+							  this.imageList[i].width/this.imageTileColCount, 
+							  this.imageList[i].height/this.imageTileRowCount);
+
+
+				if (this.tickDrawFrameInterval == 0) {
+					this.imageCurrentCol++;
+
+					if (this.imageCurrentCol < this.imageAnimationColMin || 
+						this.imageCurrentCol >= this.imageAnimationColMax) {
+						this.imageCurrentCol = this.imageAnimationColMin;
+					}
+				}
+			}
+		}
+	}
+}
