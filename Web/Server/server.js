@@ -102,22 +102,23 @@ function receiveEvent(eventType, spriteDestId, data) {
 setInterval(loop, 25);
 
 function loop() {
-    if (unitManager.unitList.length == 0) {
+    if (unitManager.getRealPlayerCount() == 0) {
     	if (currentWave != null) {
+    		console.log("No more connected players, deleting wave");
     		currentWave.destroy();
     		currentWave = null;
     	}
     }
     else {
     	if (currentWave == null) {
-    		currentWave = new Wave(unitManager.unitList, 576, 576, unitManager, 5);
+    		currentWave = new Wave(576, 576, unitManager, 5);
     		currentWave.initialize();
     	}
 
-    	if (currentWave.digest()) {
+    	if (currentWave.tick()) {
     		currentWave = null;
     	}
 
-    	unitManager.digest(ctxMap);
+    	unitManager.tick(ctxMap);
     }
 }

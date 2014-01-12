@@ -24,6 +24,11 @@ module.exports = TileSprite = function(imagePath, type, columns, rows) {
 	this.changeColumnInterval = function (colMin, colMax) {
 		this.imageAnimationColMin = colMin - 1;	
 		this.imageAnimationColMax = colMax;	
+
+		if (this.imageCurrentCol < this.imageAnimationColMin || 
+			this.imageCurrentCol >= this.imageAnimationColMax) {
+			this.imageCurrentCol = this.imageAnimationColMin;
+		}
 	}
 
 	this.resetCol = function () {
@@ -47,8 +52,8 @@ module.exports = TileSprite = function(imagePath, type, columns, rows) {
 							  this.imageList[i].height/this.imageTileRowCount * this.imageCurrentRow,
 							  this.imageList[i].width/this.imageTileColCount, 
 							  this.imageList[i].height/this.imageTileRowCount, 
-							  spritePosX - this.imageList[i].width/this.imageTileColCount/2, 
-							  spritePosY - this.imageList[i].height/this.imageTileRowCount/2, 
+							  Math.floor(spritePosX - this.imageList[i].width/this.imageTileColCount/2), 
+							  Math.floor(spritePosY - this.imageList[i].height/this.imageTileRowCount/2), 
 							  this.imageList[i].width/this.imageTileColCount, 
 							  this.imageList[i].height/this.imageTileRowCount);
 

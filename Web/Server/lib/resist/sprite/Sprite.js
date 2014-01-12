@@ -7,6 +7,7 @@ module.exports = Sprite = function(type, x, y) {
 	this.life = 100;
 	this.maxLife = 100;
 	this.realPlayer = false;
+	this.hitStrength = 1;
 
 	this.tileSpriteList = new Array();
 	this.pendingAnimation = null;
@@ -73,22 +74,22 @@ module.exports = Sprite = function(type, x, y) {
 				if (this.pendingAnimation == null && this.tileSpriteList[i].type == "WALK") {
 					if (this.y > this.destY) {
 						this.tileSpriteList[i].changeRow(1);
-						this.tileSpriteList[i].changeColumnInterval(1, 8);
+						this.tileSpriteList[i].changeColumnInterval(2, 9);
 					}
 					else if (this.x < this.destX) {
 						this.tileSpriteList[i].changeRow(4);	
-						this.tileSpriteList[i].changeColumnInterval(1, 8);
+						this.tileSpriteList[i].changeColumnInterval(2, 9);
 					}
 					else if (this.x > this.destX) {
 						this.tileSpriteList[i].changeRow(2);	
-						this.tileSpriteList[i].changeColumnInterval(1, 8);
+						this.tileSpriteList[i].changeColumnInterval(2, 9);
 					}
 					else  {
 						this.tileSpriteList[i].changeRow(3);	
-						this.tileSpriteList[i].changeColumnInterval(1, 8);	
+						this.tileSpriteList[i].changeColumnInterval(2, 9);	
 
 						if (this.y == this.destY) {
-							this.tileSpriteList[i].changeColumnInterval(9, 9);
+							this.tileSpriteList[i].changeColumnInterval(1, 1);
 						}
 					}
 

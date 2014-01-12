@@ -111,7 +111,7 @@ function loop() {
 	}
 
     for (var i = 0; i < spriteList.length; i++) {
-    	spriteList[i].digest(ctxMap);
+    	spriteList[i].tick(ctxMap);
     	spriteList[i].sprite.tick(ctx, spriteList[i]);
     }
 }

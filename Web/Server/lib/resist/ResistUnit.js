@@ -6,18 +6,23 @@ module.exports = ResistUnit = function (playerName, sprite) {
 	this.toDigestEventList = new Array();
 	this.speed = 1;
 	this.realPlayer = false;
+	this.behavior = null; // only instaciated in server
 
 	this.customAttack = null;
+	var MathUtils = require("./MathUtils");
+	this.mathUtils = new MathUtils();
 
 	if (sprite.type == "Mage") {
 		this.speed = 1.5;
+		this.sprite.hitStrength = 1;
 		// attack default, mana, life...
 	}
 	else if (sprite.type == "Warrior") {
 		this.speed = 2;
+		this.sprite.hitStrength = 3;
 	}
 
-	this.digest = function(ctxMap) {
+	this.tick = function(ctxMap) {
 		this.customAttack = null;
 
 		for (var i = 0; i < this.toDigestEventList.length; i++) {
@@ -57,34 +62,40 @@ module.exports = ResistUnit = function (playerName, sprite) {
 
 		this.toDigestEventList = new Array();
 
-		if (this.sprite.x + this.speed > this.sprite.destX &&
-			this.sprite.x - this.speed < this.sprite.destX) {
-			this.sprite.destX = this.sprite.x;
-		}
-		else if (this.sprite.x < this.sprite.destX) {
-			if (!ctxMap.testCollision(this.sprite.x + this.speed, this.sprite.y)) {
-				this.sprite.x += this.speed;
+		if (this.mathUtils.distance(this.sprite.x, this.sprite.y, this.sprite.destX, this.sprite.destY) > this.speed) {
+			if (this.sprite.x + this.speed >= this.sprite.destX &&
+				this.sprite.x - this.speed <= this.sprite.destX) {
+				this.sprite.destX = this.sprite.x;
 			}
-		}
-		else if (this.sprite.x > this.sprite.destX) {
-			if (!ctxMap.testCollision(this.sprite.x - 1, this.sprite.y)) {
-				this.sprite.x -= this.speed;
+			else if (this.sprite.x < this.sprite.destX) {
+				if (!ctxMap.testCollision(this.sprite.x + this.speed, this.sprite.y)) {
+					this.sprite.x += this.speed;
+				}
 			}
-		}
+			else if (this.sprite.x > this.sprite.destX) {
+				if (!ctxMap.testCollision(this.sprite.x - 1, this.sprite.y)) {
+					this.sprite.x -= this.speed;
+				}
+			}
 
-		if (this.sprite.y + this.speed > this.sprite.destY &&
-			this.sprite.y - this.speed < this.sprite.destY) {
+			if (this.sprite.y + this.speed >= this.sprite.destY &&
+				this.sprite.y - this.speed <= this.sprite.destY) {
+				this.sprite.destY = this.sprite.y;
+			}
+			else if (this.sprite.y < this.sprite.destY) {
+				if (!ctxMap.testCollision(this.sprite.x, this.sprite.y + 1) || this.sprite.y < 1) {
+					this.sprite.y += this.speed;
+				}
+			}
+			else if (this.sprite.y > this.sprite.destY) {
+				if (!ctxMap.testCollision(this.sprite.x - 1, this.sprite.y - 1)) {
+					this.sprite.y -= this.speed;
+				}
+			}
+		}
+		else {
+			this.sprite.destX = this.sprite.x;
 			this.sprite.destY = this.sprite.y;
-		}
-		else if (this.sprite.y < this.sprite.destY) {
-			if (!ctxMap.testCollision(this.sprite.x, this.sprite.y + 1) || this.sprite.y < 1) {
-				this.sprite.y += this.speed;
-			}
-		}
-		else if (this.sprite.y > this.sprite.destY) {
-			if (!ctxMap.testCollision(this.sprite.x - 1, this.sprite.y - 1)) {
-				this.sprite.y -= this.speed;
-			}
 		}
 	}
 
