@@ -1,8 +1,6 @@
 module.exports = UnitManager = function (callBack, isClient) {
 	var unitManager = this;
 	this.unitList = new Array();
-	var MathUtils = require("./MathUtils");
-	this.mathUtils = new MathUtils();
 	this.time = 0;
 
 	this.createPlayerUnit = function (socket, data) {
@@ -91,18 +89,22 @@ module.exports = UnitManager = function (callBack, isClient) {
 
     		if (this.unitList[i].customAttack == "special-attack-1") {
 				this.unitList[i].attackCooldown = this.unitList[i].hitCooldown;
-    			var distance = 100;
-    			this.unitList[i].sprite.destX = this.unitList[i].sprite.x;
-    			this.unitList[i].sprite.destY = this.unitList[i].sprite.y;
-    			this.broadCastEvent("sprite-update", this.unitList[i].id, this.unitList[i].toArray());
-	    		this.broadCastEvent("visual-effect", this.unitList[i].id, "special-attack-1");
+				var effect = null;
 
-    			for (var j = 0; j < this.unitList.length; j++) {
-    				if (this.unitList[j].realPlayer != this.unitList[i].realPlayer &&
-	    				this.mathUtils.distance(this.unitList[i].sprite.x, this.unitList[i].sprite.y, this.unitList[j].sprite.x, this.unitList[j].sprite.y) < distance) {
-	    				
-	    				this.attack(this.unitList[i], this.unitList[j], 30);
-	    			}
+    			if (this.unitList[i].sprite.type == "Mage") {
+					var FireNova = require("./skill/FireNova");
+					effect = new FireNova(this.unitList[i].sprite);
+					effect.processAttack(this.unitList[i], this.unitList, this);
+    			}
+    			else if (this.unitList[i].sprite.type == "Warrior") {
+					var Slash = require("./skill/Slash");
+					effect = new Slash(this.unitList[i].sprite);
+					effect.processAttack(this.unitList[i], this.unitList, this);
+    			}
+
+    			if (effect != null) {
+    				this.broadCastEvent("sprite-update", this.unitList[i].id, this.unitList[i].toArray());
+	    			this.broadCastEvent("visual-effect", this.unitList[i].id, effect.toArray());
 	    		}
     		}
 
@@ -138,6 +140,7 @@ module.exports = UnitManager = function (callBack, isClient) {
 	this.newWave = function () {
     	for (var i = 0; i < this.unitList.length; i++) {
     		this.unitList[i].sprite.restore();
+    		this.broadCastEvent("sprite-update", this.unitList[i].id, this.unitList[i].toArray());
     	}
 	}
 }

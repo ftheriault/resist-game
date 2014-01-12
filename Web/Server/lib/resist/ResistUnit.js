@@ -65,7 +65,7 @@ module.exports = ResistUnit = function (playerName, sprite) {
 					this.sprite.life = data["life"];
 				}
 				else if (eventType === "visual-effect") {
-					this.sprite.addEffect(data);
+					this.sprite.animate(data);
 				}
 				else if (eventType === "custom-attack") {
 					this.customAttack = data;
@@ -123,6 +123,7 @@ module.exports = ResistUnit = function (playerName, sprite) {
 		this.sprite.x = data["posX"];
 		this.sprite.y = data["posY"];
 		this.sprite.life = data["life"];
+		this.sprite.type = data["type"];
 		this.realPlayer = data["realPlayer"];
 	}
 
@@ -134,18 +135,18 @@ module.exports = ResistUnit = function (playerName, sprite) {
 			destX : this.sprite.destX,
 			destY : this.sprite.destY,
 			playerName : this.playerName,
-			playerClass : this.sprite.type,
-			realPlayer : this.realPlayer
+			type : this.sprite.type,
+			realPlayer : this.realPlayer,
+			dataType : "unit-data"
 		}
 
 		return data;
 	}	
 
-	if (sprite.type == "Mage") {
+	if (this.sprite.type == "Mage") {
 		this.setProfile(80, 1.5, 10, 3);
-		// attack default, mana, life...
 	}
-	else if (sprite.type == "Warrior") {
+	else if (this.sprite.type == "Warrior") {
 		this.setProfile(120, 2, 3, 1);
 	}
 }

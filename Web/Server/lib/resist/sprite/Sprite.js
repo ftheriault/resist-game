@@ -11,6 +11,7 @@ module.exports = Sprite = function(type, x, y) {
 
 	this.tileSpriteList = new Array();
 	this.pendingAnimation = null;
+	this.currentEffet = null;
 
 	this.setProfile = function (life, mana) {
 		this.life = life;
@@ -21,8 +22,7 @@ module.exports = Sprite = function(type, x, y) {
 		this.life = this.maxLife;
 	}
 
-	this.loadTickImages = function() {
-	
+	this.loadTickImages = function() {	
 		var imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk.png", "WALK", 9, 4);
 		imageSprite.changeColumnInterval(1, 8);
 		this.tileSpriteList.push(imageSprite);
@@ -59,15 +59,22 @@ module.exports = Sprite = function(type, x, y) {
 
 	}
 
-	this.addEffect = function (effectType) {
-		if (effectType == "special-attack-1") {
-			this.pendingAnimation = "ATTACK";
-		}
+	this.animate = function (data) {
+		this.pendingAnimation = data["type"];
 
 		for (var i = 0; i < this.tileSpriteList.length; i++) {
 			if (this.pendingAnimation == this.tileSpriteList[i].type) {
 				this.tileSpriteList[i].resetCol();
 			}
+		}
+
+		if (data["name"] == "SLASH") {
+			this.currentEffet = new Slash(this);
+			this.currentEffet.fromArray(data);
+		}
+		else if (data["name"] == "FIRENOVA") {
+			this.currentEffet = new FireNova(this);
+			this.currentEffet.fromArray(data);
 		}
 	}
 
@@ -79,6 +86,14 @@ module.exports = Sprite = function(type, x, y) {
 			ctx.fillRect(this.x - 5, this.y - 5, 10, 10);
 		}
 		else {
+			animationFound = false;
+
+			if (this.currentEffet != null) {
+				if (this.currentEffet.tick(ctx)) {
+					this.currentEffet = null;
+				}
+			}
+			
 			for (var i = 0; i < this.tileSpriteList.length; i++) {
 				if (this.pendingAnimation == null && this.tileSpriteList[i].type == "WALK") {
 					if (this.y > this.destY) {
@@ -108,13 +123,15 @@ module.exports = Sprite = function(type, x, y) {
 					this.tileSpriteList[i].tick(ctx, this.x, this.y);
 					this.tileSpriteList[i].changeRow(3);	
 
-					if (this.tileSpriteList[i].imageCurrentCol == 0) {
+					if (this.tileSpriteList[i].imageCurrentCol == this.tileSpriteList[i].imageAnimationColMin) {
 						animationDone = true;
 					}
+
+					animationFound = true;
 				}
 			}
 
-			if (animationDone) {
+			if (this.pendingAnimation != null && animationDone) {
 				this.pendingAnimation = null;
 			}
 

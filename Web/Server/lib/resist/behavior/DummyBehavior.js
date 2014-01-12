@@ -7,7 +7,7 @@ module.exports = DummyBehavior = function(spriteUnit) {
     this.firstIteration = true;
 
 	this.tick = function (unitList, unitManager, gameWidth, gameHeight) {
-        var meleeAttackDistance = 35;
+        var meleeAttackDistance = 40;
 
 		// Auto melee attack
 		for (var i = 0; i < unitList.length; i++) {

@@ -79,23 +79,22 @@ function receiveEvent (eventType, spriteDestId, data) {
 					break;
 				}
 				else {
-					if (data["posX"] != null) {
+					if (data != null && data["posX"] != null) {
 						spriteList[i].sprite.x = data["posX"];
 						spriteList[i].sprite.y = data["posY"];
 					}
+					
 					spriteList[i].toDigestEventList.push(new Array(eventType, spriteDestId, data));
 					found = true;
 				}
 			}
 		}
 
-		if (!found && eventType != "delete-sprite") {
-			var otherPlayer = new ResistUnit(data["playerName"], new Sprite(data["playerClass"], data["posX"], data["posY"]));
-			otherPlayer.sprite.loadTickImages();
-			otherPlayer.sprite.destX = data["destX"];
-			otherPlayer.sprite.destY = data["destY"];
+		if (!found && eventType != "delete-sprite" && data != null && data["dataType"] == "unit-data") {
+			var otherPlayer = new ResistUnit(data["playerName"], new Sprite(data["type"], data["posX"], data["posY"]));
+			otherPlayer.fromArray(data);
 			otherPlayer.id = spriteDestId;
-			otherPlayer.realPlayer = data["realPlayer"];
+			otherPlayer.sprite.loadTickImages();
 			spriteList.push(otherPlayer);
 		}
 	}
