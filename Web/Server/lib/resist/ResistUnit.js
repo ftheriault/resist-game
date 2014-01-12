@@ -64,6 +64,9 @@ module.exports = ResistUnit = function (playerName, sprite) {
 				else if (eventType === "hit") {
 					this.sprite.life = data["life"];
 				}
+				else if (eventType === "heal") {
+					this.sprite.life = data["life"];
+				}
 				else if (eventType === "visual-effect") {
 					this.sprite.animate(data);
 				}
@@ -148,5 +151,8 @@ module.exports = ResistUnit = function (playerName, sprite) {
 	}
 	else if (this.sprite.type == "Warrior") {
 		this.setProfile(120, 2, 3, 1);
+	}
+	else if (this.sprite.type == "Priest") {
+		this.setProfile(60, 2, 3, 1);
 	}
 }

@@ -31,7 +31,7 @@ module.exports = Sprite = function(type, x, y) {
 		imageSprite.changeColumnInterval(1, 6);
 		this.tileSpriteList.push(imageSprite);	
 
-		if (this.type == "Mage" || this.type == "Warrior") {
+		if (this.type == "Mage" || this.type == "Warrior" || this.type == "Priest") {
 			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk-head.png", "WALK", 9, 4);
 			imageSprite.changeColumnInterval(1, 8);
 			this.tileSpriteList.push(imageSprite);
@@ -76,6 +76,10 @@ module.exports = Sprite = function(type, x, y) {
 			this.currentEffet = new FireNova(this);
 			this.currentEffet.fromArray(data);
 		}
+		else if (data["name"] == "HOLYNOVA") {
+			this.currentEffet = new HolyNova(this);
+			this.currentEffet.fromArray(data);
+		}
 	}
 
 	this.tick = function (delta, ctx, spriteUnit) {
@@ -93,7 +97,7 @@ module.exports = Sprite = function(type, x, y) {
 					this.currentEffet = null;
 				}
 			}
-			
+
 			for (var i = 0; i < this.tileSpriteList.length; i++) {
 				if (this.pendingAnimation == null && this.tileSpriteList[i].type == "WALK") {
 					if (this.y > this.destY) {

@@ -5,7 +5,8 @@ var Map = require('./Map/Map'),
 	Sprite = require('./sprite/Sprite'),
 	TileSprite = require('./sprite/TileSprite'),
 	Slash = require('./skill/Slash'),
-	FireNova = require('./skill/FireNova');
+	FireNova = require('./skill/FireNova'),
+	HolyNova = require('./skill/HolyNova');
 
 $(document).ready(function () {
 	var map = new Map();

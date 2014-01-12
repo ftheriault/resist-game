@@ -101,6 +101,11 @@ module.exports = UnitManager = function (callBack, isClient) {
 					effect = new Slash(this.unitList[i].sprite);
 					effect.processAttack(this.unitList[i], this.unitList, this);
     			}
+    			else if (this.unitList[i].sprite.type == "Priest") {
+					var HolyNova = require("./skill/HolyNova");
+					effect = new HolyNova(this.unitList[i].sprite);
+					effect.processAttack(this.unitList[i], this.unitList, this);
+    			}
 
     			if (effect != null) {
     				this.broadCastEvent("sprite-update", this.unitList[i].id, this.unitList[i].toArray());
@@ -135,6 +140,20 @@ module.exports = UnitManager = function (callBack, isClient) {
 		}
 		
 		return dead;
+	}
+
+	this.heal = function (fromUnit, toUnit, amount) {
+		if (fromUnit.sprite.life > 0 && toUnit.sprite.life > 0) {
+			fromUnit.attackCooldown = fromUnit.hitCooldown;
+			
+			toUnit.sprite.life += amount;
+
+			if (toUnit.sprite.life > toUnit.sprite.maxLife) {
+				toUnit.sprite.life = toUnit.sprite.maxLife;
+			}
+
+	    	this.broadCastEvent("heal", toUnit.id, {life : toUnit.sprite.life});
+		}
 	}
 
 	this.newWave = function () {
