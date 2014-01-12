@@ -12,6 +12,7 @@ module.exports = Sprite = function(type, x, y) {
 	this.tileSpriteList = new Array();
 	this.pendingAnimation = null;
 	this.currentEffet = null;
+	this.currentAnimationRow = 0;
 
 	this.setProfile = function (life, mana) {
 		this.life = life;
@@ -100,32 +101,41 @@ module.exports = Sprite = function(type, x, y) {
 
 			for (var i = 0; i < this.tileSpriteList.length; i++) {
 				if (this.pendingAnimation == null && this.tileSpriteList[i].type == "WALK") {
+					var walking = false;
 					if (this.y > this.destY) {
-						this.tileSpriteList[i].changeRow(1);
+						this.currentAnimationRow = 1;
+						this.tileSpriteList[i].changeRow(this.currentAnimationRow);
 						this.tileSpriteList[i].changeColumnInterval(2, 9);
+						walking = true;
 					}
-					else if (this.x < this.destX) {
-						this.tileSpriteList[i].changeRow(4);	
+					else if (this.y < this.destY) {
+						this.currentAnimationRow = 3;
+						this.tileSpriteList[i].changeRow(this.currentAnimationRow);	
+						this.tileSpriteList[i].changeColumnInterval(2, 9);	
+						walking = true;
+					}
+					if (this.x < this.destX) {
+						this.currentAnimationRow = 4;
+						this.tileSpriteList[i].changeRow(this.currentAnimationRow);	
 						this.tileSpriteList[i].changeColumnInterval(2, 9);
+						walking = true;
 					}
 					else if (this.x > this.destX) {
-						this.tileSpriteList[i].changeRow(2);	
+						this.currentAnimationRow = 2;
+						this.tileSpriteList[i].changeRow(this.currentAnimationRow);	
 						this.tileSpriteList[i].changeColumnInterval(2, 9);
+						walking = true;
 					}
-					else  {
-						this.tileSpriteList[i].changeRow(3);	
-						this.tileSpriteList[i].changeColumnInterval(2, 9);	
 
-						if (this.y == this.destY) {
-							this.tileSpriteList[i].changeColumnInterval(1, 1);
-						}
+					if (!walking) {
+						this.tileSpriteList[i].changeColumnInterval(1, 1);						
 					}
 
 					this.tileSpriteList[i].tick(ctx, this.x, this.y);
 				}
 				else if (this.pendingAnimation == this.tileSpriteList[i].type) {
 					this.tileSpriteList[i].tick(ctx, this.x, this.y);
-					this.tileSpriteList[i].changeRow(3);	
+					this.tileSpriteList[i].changeRow(this.currentAnimationRow);	
 
 					if (this.tileSpriteList[i].imageCurrentCol == this.tileSpriteList[i].imageAnimationColMin) {
 						animationDone = true;
