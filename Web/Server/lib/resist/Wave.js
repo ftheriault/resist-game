@@ -13,6 +13,7 @@ module.exports = Wave = function (gameWidth, gameHeight, unitManager, startDelay
 		for (var i = 0; i < this.level * 5; i++) {
 			var newUnit = this.unitManager.createUnit("Skeleton" + i, new Sprite("Skeleton", Math.floor(Math.random() * this.gameWidth), -100), false, true);
 			newUnit.behavior = new DummyBehavior(newUnit);
+			newUnit.setProfile(50, 0, 1, 2, 2);
 			this.spriteList.push(newUnit);
 		}
 

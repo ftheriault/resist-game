@@ -14,7 +14,7 @@ module.exports = DummyBehavior = function(spriteUnit) {
 			if (unitList[i].realPlayer && unitList[i].sprite.life > 0 &&
 				this.mathUtils.distance(unitList[i].sprite.x, unitList[i].sprite.y, this.sprite.x, this.sprite.y) < meleeAttackDistance) {
 
-                unitManager.hit(unitList[i], this.sprite.hitStrength);
+                unitManager.attack(this.spriteUnit, unitList[i], this.sprite.hitStrength);
 			}
 		}
 

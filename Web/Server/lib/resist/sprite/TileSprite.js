@@ -37,8 +37,8 @@ module.exports = TileSprite = function(imagePath, type, columns, rows) {
 
 	this.tick = function (ctx, spritePosX, spritePosY) {
 		var now = new Date().getTime();
-		var delta = now - (this.time || now);
-		this.time = now;
+		var delta = now - (this.tickTime || now);
+		this.tickTime = now;
 		this.tickDrawFrameInterval += delta;
 
 		if (this.tickDrawFrameInterval > this.tickRefreshInterval) {

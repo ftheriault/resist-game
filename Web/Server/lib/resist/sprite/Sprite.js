@@ -5,12 +5,19 @@ module.exports = Sprite = function(type, x, y) {
 	this.destY = this.y;
 	this.type = type;
 	this.life = 100;
+	this.mana = 0;
 	this.maxLife = 100;
 	this.realPlayer = false;
 	this.hitStrength = 1;
 
 	this.tileSpriteList = new Array();
 	this.pendingAnimation = null;
+
+	this.setProfile = function (life, mana) {
+		this.life = life;
+		this.maxLife = life;
+		this.mana = mana;
+	}
 
 	this.loadTickImages = function() {
 	
@@ -62,7 +69,7 @@ module.exports = Sprite = function(type, x, y) {
 		}
 	}
 
-	this.tick = function (ctx, spriteUnit) {
+	this.tick = function (delta, ctx, spriteUnit) {
 		var animationDone = false;
 
 		if (this.life == 0) {

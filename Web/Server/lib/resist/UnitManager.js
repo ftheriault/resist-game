@@ -3,6 +3,7 @@ module.exports = UnitManager = function (callBack, isClient) {
 	this.unitList = new Array();
 	var MathUtils = require("./MathUtils");
 	this.mathUtils = new MathUtils();
+	this.time = 0;
 
 	this.createPlayerUnit = function (socket, data) {
 		player = this.createUnit(data["playerName"], new Sprite(data["playerClass"], 250, 450), true);
@@ -57,7 +58,7 @@ module.exports = UnitManager = function (callBack, isClient) {
 	 * Must dispatch an event to players and client players
 	 */
 	this.broadCastEvent = function(eventType, spriteDestId, data, sourceUnit) {	
-		if (typeof sourceUnit == "undefined" || !sourceUnit.realPlayer || sourceUnit.sprite.life > 0) {
+		if (typeof sourceUnit == "undefined" || !sourceUnit.realPlayer || sourceUnit.canSendEvent(eventType)) {
 			for (var i = 0; i < this.unitList.length; i++) {
 				this.unitList[i].toDigestEventList.push(new Array(eventType, spriteDestId, data));
 
@@ -81,10 +82,15 @@ module.exports = UnitManager = function (callBack, isClient) {
 	}
 
 	this.tick = function (ctxMap) {
+		var now = new Date().getTime();
+		var delta = now - (this.time || now);
+		this.time = now;
+
     	for (var i = 0; i < this.unitList.length; i++) {
-    		this.unitList[i].tick(ctxMap);
+    		this.unitList[i].tick(delta, ctxMap);
 
     		if (this.unitList[i].customAttack == "special-attack-1") {
+				this.unitList[i].attackCooldown = this.unitList[i].hitCooldown;
     			var distance = 100;
     			this.unitList[i].sprite.destX = this.unitList[i].sprite.x;
     			this.unitList[i].sprite.destY = this.unitList[i].sprite.y;
@@ -95,14 +101,7 @@ module.exports = UnitManager = function (callBack, isClient) {
     				if (this.unitList[j].realPlayer != this.unitList[i].realPlayer &&
 	    				this.mathUtils.distance(this.unitList[i].sprite.x, this.unitList[i].sprite.y, this.unitList[j].sprite.x, this.unitList[j].sprite.y) < distance) {
 	    				
-
-	    				if (this.hit(this.unitList[j], 30)) {
-	    					if (j < i) {
-	    						i--;
-	    					}
-
-	    					j--;
-	    				}
+	    				this.attack(this.unitList[i], this.unitList[j], 30);
 	    			}
 	    		}
     		}
@@ -111,23 +110,26 @@ module.exports = UnitManager = function (callBack, isClient) {
     	}
 	}
 
-	this.hit = function (resistUnit, amount) {
-		var dead = false;
-		resistUnit.sprite.life -= amount;
+	this.attack = function (fromUnit, toUnit, amount) {
+		if (fromUnit.sprite.life > 0) {
+			fromUnit.attackCooldown = fromUnit.hitCooldown;
+			var dead = false;
+			toUnit.sprite.life -= amount;
 
-		if (resistUnit.sprite.life <= 0) {
-			resistUnit.sprite.life = 0;
+			if (toUnit.sprite.life <= 0) {
+				toUnit.sprite.life = 0;
 
-			if (!resistUnit.realPlayer) {
-				this.deleteUnit(resistUnit.id);
-				dead = true;
+				if (!toUnit.realPlayer) {
+					this.deleteUnit(toUnit.id);
+					dead = true;
+				}
+				else {
+	    			this.broadCastEvent("hit", toUnit.id, {life : toUnit.sprite.life});
+				}
 			}
 			else {
-    			this.broadCastEvent("hit", resistUnit.id, {life : resistUnit.sprite.life});
+	    		this.broadCastEvent("hit", toUnit.id, {life : toUnit.sprite.life});
 			}
-		}
-		else {
-    		this.broadCastEvent("hit", resistUnit.id, {life : resistUnit.sprite.life});
 		}
 		
 		return dead;

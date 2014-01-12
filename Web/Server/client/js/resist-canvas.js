@@ -5,6 +5,7 @@ var player;
 var ctxMap;
 var ctxImg;
 var map;
+var tickTime = 0;
 
 toDigestEventList = new Array();
 receivedEventList = new Array();
@@ -101,6 +102,9 @@ function receiveEvent (eventType, spriteDestId, data) {
 }
 
 function loop() {
+	var now = new Date().getTime();
+	var delta = now - (tickTime || now);
+	tickTime = now;
 
 	if (ctxImg !== undefined) {
 		ctx.drawImage(ctxImg, 0, 0, ctxMap.getWidth(), ctxMap.getWidth());
@@ -111,8 +115,8 @@ function loop() {
 	}
 
     for (var i = 0; i < spriteList.length; i++) {
-    	spriteList[i].tick(ctxMap);
-    	spriteList[i].sprite.tick(ctx, spriteList[i]);
+    	spriteList[i].tick(delta, ctxMap);
+    	spriteList[i].sprite.tick(delta, ctx, spriteList[i]);
     }
 }
 

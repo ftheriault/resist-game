@@ -9,21 +9,44 @@ module.exports = ResistUnit = function (playerName, sprite) {
 	this.behavior = null; // only instaciated in server
 
 	this.customAttack = null;
+	this.attackCooldown = 0;
+	this.hitCooldown = 2; // in sec.
 	var MathUtils = require("./MathUtils");
 	this.mathUtils = new MathUtils();
 
-	if (sprite.type == "Mage") {
-		this.speed = 1.5;
-		this.sprite.hitStrength = 1;
-		// attack default, mana, life...
-	}
-	else if (sprite.type == "Warrior") {
-		this.speed = 2;
-		this.sprite.hitStrength = 3;
+	this.setProfile = function(life, mana, walkSpeed, hitStrength, hitCooldown) {
+		this.sprite.setProfile(life, mana);
+		this.speed = walkSpeed;
+		this.hitStrength = hitStrength;
+		this.hitCooldown = hitCooldown * 1000;
 	}
 
-	this.tick = function(ctxMap) {
+	this.canSendEvent = function (eventType) {
+		var allow = false;
+
+		if (this.sprite.life > 0) {
+			allow = true;
+
+			if (eventType === "custom-attack") {
+				if (this.attackCooldown > 0) {
+					allow = false;
+				}
+			}
+		}
+
+		return allow;
+	}
+
+	this.tick = function(timeDelta, ctxMap) {
 		this.customAttack = null;
+
+		if (this.attackCooldown > 0) {
+			this.attackCooldown -= timeDelta;
+
+			if (this.attackCooldown < 0) {
+				this.attackCooldown = 0;
+			}
+		}
 
 		for (var i = 0; i < this.toDigestEventList.length; i++) {
 			var eventType = this.toDigestEventList[i][0];
@@ -50,7 +73,7 @@ module.exports = ResistUnit = function (playerName, sprite) {
 			}
 		}
 
-		if (this.sprite.life == 0) {
+		if (this.sprite.life <= 0) {
 			this.sprite.destX = this.sprite.x;
 			this.sprite.destY = this.sprite.y;
 		}
@@ -116,5 +139,13 @@ module.exports = ResistUnit = function (playerName, sprite) {
 		}
 
 		return data;
+	}	
+
+	if (sprite.type == "Mage") {
+		this.setProfile(80, 80, 1.5, 10, 3);
+		// attack default, mana, life...
+	}
+	else if (sprite.type == "Warrior") {
+		this.setProfile(120, 120, 2, 3, 1);
 	}
 }
