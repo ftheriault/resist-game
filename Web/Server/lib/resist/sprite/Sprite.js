@@ -5,7 +5,6 @@ module.exports = Sprite = function(type, x, y) {
 	this.destY = this.y;
 	this.type = type;
 	this.life = 100;
-	this.mana = 0;
 	this.maxLife = 100;
 	this.realPlayer = false;
 	this.hitStrength = 1;
@@ -16,7 +15,10 @@ module.exports = Sprite = function(type, x, y) {
 	this.setProfile = function (life, mana) {
 		this.life = life;
 		this.maxLife = life;
-		this.mana = mana;
+	}
+
+	this.restore = function() {
+		this.life = this.maxLife;
 	}
 
 	this.loadTickImages = function() {

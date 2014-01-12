@@ -137,7 +137,7 @@ module.exports = UnitManager = function (callBack, isClient) {
 
 	this.newWave = function () {
     	for (var i = 0; i < this.unitList.length; i++) {
-    		this.unitList[i].sprite.life = this.unitList[i].sprite.maxLife;
+    		this.unitList[i].sprite.restore();
     	}
 	}
 }

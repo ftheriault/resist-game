@@ -14,8 +14,8 @@ module.exports = ResistUnit = function (playerName, sprite) {
 	var MathUtils = require("./MathUtils");
 	this.mathUtils = new MathUtils();
 
-	this.setProfile = function(life, mana, walkSpeed, hitStrength, hitCooldown) {
-		this.sprite.setProfile(life, mana);
+	this.setProfile = function(life, walkSpeed, hitStrength, hitCooldown) {
+		this.sprite.setProfile(life);
 		this.speed = walkSpeed;
 		this.hitStrength = hitStrength;
 		this.hitCooldown = hitCooldown * 1000;
@@ -142,10 +142,10 @@ module.exports = ResistUnit = function (playerName, sprite) {
 	}	
 
 	if (sprite.type == "Mage") {
-		this.setProfile(80, 80, 1.5, 10, 3);
+		this.setProfile(80, 1.5, 10, 3);
 		// attack default, mana, life...
 	}
 	else if (sprite.type == "Warrior") {
-		this.setProfile(120, 120, 2, 3, 1);
+		this.setProfile(120, 2, 3, 1);
 	}
 }
