@@ -44,9 +44,9 @@ module.exports = HolyNova = function(sprite) {
 											   this.sprite.y,
 											   (percentDone + 0.2) * this.distance);  
 
-			degrade.addColorStop(percentDone, 'rgba(200,200,200,0)');  
-			degrade.addColorStop(percentDone + 0.19, 'rgba(200,200,200,1)');
-			degrade.addColorStop(percentDone + 0.2, 'rgba(200,200,200,0)');  
+			degrade.addColorStop(percentDone, 'rgba(200,200,0,0)');  
+			degrade.addColorStop(percentDone + 0.05, 'rgba(200,250,00,' + (0.8 - percentDone)  +')');
+			degrade.addColorStop(percentDone + 0.2, 'rgba(50,50,0,0)');  
 
 			ctx.fillStyle = degrade;  
 			ctx.fillRect(this.sprite.x - this.distance, this.sprite.y - this.distance, this.distance * 2, this.distance * 2);
