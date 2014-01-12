@@ -36,12 +36,7 @@ module.exports = ResistUnit = function (playerName, sprite) {
 					this.sprite.destY = data[1];
 				}
 				else if (eventType === "sprite-update" || eventType === "new-sprite") {
-					this.sprite.destX = data["destX"];
-					this.sprite.destY = data["destY"];
-					this.sprite.x = data["posX"];
-					this.sprite.y = data["posY"];
-					this.sprite.life = data["life"];
-					this.realPlayer = data["realPlayer"];
+					this.fromArray(data);
 				}
 				else if (eventType === "hit") {
 					this.sprite.life = data["life"];
@@ -97,6 +92,15 @@ module.exports = ResistUnit = function (playerName, sprite) {
 			this.sprite.destX = this.sprite.x;
 			this.sprite.destY = this.sprite.y;
 		}
+	}
+
+	this.fromArray = function(data) {
+		this.sprite.destX = data["destX"];
+		this.sprite.destY = data["destY"];
+		this.sprite.x = data["posX"];
+		this.sprite.y = data["posY"];
+		this.sprite.life = data["life"];
+		this.realPlayer = data["realPlayer"];
 	}
 
 	this.toArray = function() {		

@@ -88,7 +88,7 @@ module.exports = UnitManager = function (callBack, isClient) {
     			var distance = 100;
     			this.unitList[i].sprite.destX = this.unitList[i].sprite.x;
     			this.unitList[i].sprite.destY = this.unitList[i].sprite.y;
-    			this.broadCastEvent("sprite-update", this.unitList[i].id, this.unitList[i].sprite.destX = this.unitList[i].toArray());
+    			this.broadCastEvent("sprite-update", this.unitList[i].id, this.unitList[i].toArray());
 	    		this.broadCastEvent("visual-effect", this.unitList[i].id, "special-attack-1");
 
     			for (var j = 0; j < this.unitList.length; j++) {
