@@ -65,7 +65,7 @@ function receiveEvent (eventType, spriteDestId, data) {
 	var found = false;
 
 	if (eventType == "wave-coming") {
-		console.log("starting wave in " + data);
+		console.log("starting wave in " + data["startDelay"] + "#" + data["waveNumber"]);
 	}
 	else {
 		if (player.id == -1) {
@@ -83,7 +83,7 @@ function receiveEvent (eventType, spriteDestId, data) {
 						spriteList[i].sprite.x = data["posX"];
 						spriteList[i].sprite.y = data["posY"];
 					}
-					
+
 					spriteList[i].toDigestEventList.push(new Array(eventType, spriteDestId, data));
 					found = true;
 				}

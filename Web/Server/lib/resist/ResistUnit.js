@@ -83,7 +83,7 @@ module.exports = ResistUnit = function (playerName, sprite) {
 
 		this.toDigestEventList = new Array();
 
-		if (this.mathUtils.distance(this.sprite.x, this.sprite.y, this.sprite.destX, this.sprite.destY) > this.speed) {
+		if (this.mathUtils.distance(this.sprite.x, this.sprite.y, this.sprite.destX, this.sprite.destY) >= this.speed) {
 			if (this.sprite.x + this.speed >= this.sprite.destX &&
 				this.sprite.x - this.speed <= this.sprite.destX) {
 				this.sprite.destX = this.sprite.x;
@@ -94,7 +94,7 @@ module.exports = ResistUnit = function (playerName, sprite) {
 				}
 			}
 			else if (this.sprite.x > this.sprite.destX) {
-				if (!ctxMap.testCollision(this.sprite.x - 1, this.sprite.y)) {
+				if (!ctxMap.testCollision(this.sprite.x - this.speed, this.sprite.y)) {
 					this.sprite.x -= this.speed;
 				}
 			}
@@ -104,12 +104,12 @@ module.exports = ResistUnit = function (playerName, sprite) {
 				this.sprite.destY = this.sprite.y;
 			}
 			else if (this.sprite.y < this.sprite.destY) {
-				if (!ctxMap.testCollision(this.sprite.x, this.sprite.y + 1) || this.sprite.y < 1) {
+				if (!ctxMap.testCollision(this.sprite.x, this.sprite.y + this.speed) || this.sprite.y < 1) {
 					this.sprite.y += this.speed;
 				}
 			}
 			else if (this.sprite.y > this.sprite.destY) {
-				if (!ctxMap.testCollision(this.sprite.x - 1, this.sprite.y - 1)) {
+				if (!ctxMap.testCollision(this.sprite.x - this.speed, this.sprite.y - this.speed)) {
 					this.sprite.y -= this.speed;
 				}
 			}
@@ -126,6 +126,7 @@ module.exports = ResistUnit = function (playerName, sprite) {
 		this.sprite.x = data["posX"];
 		this.sprite.y = data["posY"];
 		this.sprite.life = data["life"];
+		this.speed = data["speed"];
 		this.sprite.type = data["type"];
 		this.realPlayer = data["realPlayer"];
 	}
@@ -135,6 +136,7 @@ module.exports = ResistUnit = function (playerName, sprite) {
 			posX : this.sprite.x,
 			posY : this.sprite.y,
 			life : this.sprite.life,
+			speed : this.speed,
 			destX : this.sprite.destX,
 			destY : this.sprite.destY,
 			playerName : this.playerName,

@@ -5,8 +5,15 @@ module.exports = DummyBehavior = function(spriteUnit) {
     this.mathUtils = new MathUtils();
 
     this.firstIteration = true;
+    this.waitTime = 0;
+    this.tickTime = 0;
 
-	this.tick = function (unitList, unitManager, gameWidth, gameHeight) {
+	this.tick = function (unitList, unitManager, gameWidth, gameHeight) {    
+        var now = new Date().getTime();
+        var delta = now - (this.tickTime || now);
+        this.tickTime = now;
+        this.tickDrawFrameInterval += delta;
+
         var meleeAttackDistance = 40;
 
 		// Auto melee attack
@@ -26,18 +33,24 @@ module.exports = DummyBehavior = function(spriteUnit) {
             this.firstIteration = false;
             updated = true;
         }
-        else if (this.sprite.destY == this.sprite.y && 
-            this.sprite.destX == this.sprite.x) {
-            this.sprite.destX += Math.floor(Math.random() * (gameWidth/2) - gameWidth/4);
-            this.sprite.destY += Math.floor(Math.random() * (gameHeight/2) - gameHeight/4);
-            updated = true;
+        else if (this.waitTime > 0) {
+            this.waitTime -= delta;
+            
+            if (this.waitTime <= 0) {
+                this.sprite.destX = this.sprite.x + Math.floor(Math.random() * (gameWidth/2) - gameWidth/4);
+                this.sprite.destY = this.sprite.y + Math.floor(Math.random() * (gameHeight/2) - gameHeight/4);
+                updated = true;
+            }
+        }
+        else if (this.mathUtils.distance(this.sprite.x, this.sprite.y, this.sprite.destX, this.sprite.destY) <= this.spriteUnit.speed) {
+            this.waitTime = 2000;
         }
 
         if (updated) {
-            if (this.sprite.destX <= 0) { this.sprite.destX = 1; }
-            if (this.sprite.destY <= 0) { this.sprite.destY = 1; }
-            if (this.sprite.destX >= this.gameWidth) { this.sprite.destX = this.gameWidth - 1; }
-            if (this.sprite.destY >= this.gameHeight) { this.sprite.destY = this.gameWidth - 1; }
+            if (this.sprite.destX <= 0) { this.sprite.destX = 30; }
+            if (this.sprite.destY <= 0) { this.sprite.destY = 30; }
+            if (this.sprite.destX >= this.gameWidth) { this.sprite.destX = this.gameWidth - 30; }
+            if (this.sprite.destY >= this.gameHeight) { this.sprite.destY = this.gameWidth - 30; }
 
             unitManager.broadCastEvent("sprite-update", this.spriteUnit.id, this.spriteUnit.toArray());
         }

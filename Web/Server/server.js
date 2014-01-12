@@ -69,6 +69,7 @@ var UnitManager = require("./lib/resist/UnitManager");
 var unitManager = new UnitManager();
 var time;
 var currentWave = null;
+var waveNumber = 1;
 
 io.sockets.on('connection', function (socket) {
 
@@ -101,22 +102,26 @@ function receiveEvent(eventType, spriteDestId, data) {
 // -------------------------------------------------
 setInterval(loop, 25);
 
+
+
 function loop() {
     if (unitManager.getRealPlayerCount() == 0) {
     	if (currentWave != null) {
     		console.log("No more connected players, deleting wave");
     		currentWave.destroy();
     		currentWave = null;
+    		waveNumber = 1;
     	}
     }
     else {
     	if (currentWave == null) {
-    		currentWave = new Wave(576, 576, unitManager, 5);
+    		currentWave = new Wave(576, 576, unitManager, 5, waveNumber);
     		currentWave.initialize();
     	}
 
     	if (currentWave.tick()) {
     		currentWave = null;
+    		waveNumber++;
     	}
 
     	unitManager.tick(ctxMap);

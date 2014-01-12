@@ -1,5 +1,6 @@
-module.exports = Wave = function (gameWidth, gameHeight, unitManager, startDelay) {
+module.exports = Wave = function (gameWidth, gameHeight, unitManager, startDelay, waveNumber) {
 	this.level = unitManager.getRealPlayerCount() + 1;
+	this.waveNumber = waveNumber;
 	this.gameWidth = gameWidth;
 	this.gameHeight = gameHeight;
 	this.unitManager = unitManager;
@@ -9,11 +10,12 @@ module.exports = Wave = function (gameWidth, gameHeight, unitManager, startDelay
 
 	this.initialize = function () {
 		var DummyBehavior = require("./behavior/DummyBehavior");
+		var waveUpgrade = this.waveNumber/5 + 1.0;
 
 		for (var i = 0; i < this.level * 5; i++) {
 			var newUnit = this.unitManager.createUnit("Skeleton" + i, new Sprite("Skeleton", Math.floor(Math.random() * this.gameWidth), -100), false, true);
 			newUnit.behavior = new DummyBehavior(newUnit);
-			newUnit.setProfile(50, 1, 2, 2);
+			newUnit.setProfile(50 * waveUpgrade, 1 * (waveUpgrade), 2 *  waveUpgrade, 2 * waveUpgrade);
 			this.spriteList.push(newUnit);
 		}
 
@@ -49,5 +51,14 @@ module.exports = Wave = function (gameWidth, gameHeight, unitManager, startDelay
 		return completed;
 	}
 
-	this.unitManager.broadCastEvent("wave-coming", -1, startDelay);
+	this.toArray = function () {
+		var data = {
+			waveNumber : this.waveNumber,
+			startDelay : this.startDelay
+		}
+
+		return data;
+	}
+
+	this.unitManager.broadCastEvent("wave-coming", -1, this.toArray());
 }
