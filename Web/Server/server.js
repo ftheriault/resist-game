@@ -123,6 +123,10 @@ function loop() {
     		currentWave = null;
     		waveNumber++;
     	}
+    	else if (unitManager.getRealAlivePlayerCount() == 0) {
+    		currentWave.destroy();
+    		currentWave = null;
+    	}
 
     	unitManager.tick(ctxMap);
     }

@@ -80,6 +80,18 @@ module.exports = UnitManager = function (callBack, isClient) {
 		return count;
 	}
 
+	this.getRealAlivePlayerCount = function () {
+		var count = 0;
+
+		for (var i = 0; i < this.unitList.length; i++) {
+			if (this.unitList[i].realPlayer && this.unitList[i].sprite.life > 0) {
+				count++;
+			}
+		}
+
+		return count;
+	}
+
 	this.tick = function (ctxMap) {
 		var now = new Date().getTime();
 		var delta = now - (this.time || now);
