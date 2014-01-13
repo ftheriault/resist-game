@@ -1,6 +1,7 @@
 module.exports = UnitManager = function (callBack, isClient) {
 	var unitManager = this;
 	this.unitList = new Array();
+	this.unitsToDelete = new Array();
 	this.time = 0;
 
 	this.createPlayerUnit = function (socket, data) {
@@ -84,6 +85,12 @@ module.exports = UnitManager = function (callBack, isClient) {
 		var delta = now - (this.time || now);
 		this.time = now;
 
+		for (var i = 0; i < this.unitsToDelete.length; i++) {
+			this.deleteUnit(this.unitsToDelete[i]);
+		}
+		
+		this.unitsToDelete = new Array();
+
     	for (var i = 0; i < this.unitList.length; i++) {
     		this.unitList[i].tick(delta, ctxMap);
 
@@ -127,7 +134,7 @@ module.exports = UnitManager = function (callBack, isClient) {
 				toUnit.sprite.life = 0;
 
 				if (!toUnit.realPlayer) {
-					this.deleteUnit(toUnit.id);
+					this.unitsToDelete.push(toUnit.id);
 					dead = true;
 				}
 				else {

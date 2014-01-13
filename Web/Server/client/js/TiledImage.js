@@ -1,4 +1,4 @@
-module.exports = TileSprite = function(imagePath, type, columns, rows) {
+ function TiledImage(imagePath, type, columns, rows) {
 	this.type = type; // Types are : WALK, ATTACK
 	this.imageList = new Array();
 	this.tickTime = 0;
@@ -15,14 +15,14 @@ module.exports = TileSprite = function(imagePath, type, columns, rows) {
 	this.imageAnimationColMin = 0;
 	this.imageAnimationColMax = 0;
 
-	// starts at 1
+	// starts at 0
 	this.changeRow = function(row) {
-		this.imageCurrentRow = row - 1;
+		this.imageCurrentRow = row;
 	}
 
-	// starts at 1
+	// starts at 0
 	this.changeColumnInterval = function (colMin, colMax) {
-		this.imageAnimationColMin = colMin - 1;	
+		this.imageAnimationColMin = colMin;	
 		this.imageAnimationColMax = colMax;	
 
 		if (this.imageCurrentCol < this.imageAnimationColMin || 

@@ -3,7 +3,6 @@ var Map = require('./Map/Map'),
 	NetworkConnector = require('./NetworkConnector'),
 	ResistUnit = require('./ResistUnit'),
 	Sprite = require('./sprite/Sprite'),
-	TileSprite = require('./sprite/TileSprite'),
 	Slash = require('./skill/Slash'),
 	FireNova = require('./skill/FireNova'),
 	HolyNova = require('./skill/HolyNova');

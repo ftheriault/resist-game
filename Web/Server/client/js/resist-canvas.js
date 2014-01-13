@@ -28,6 +28,7 @@ function start() {
 	networkConnector.sendCredentials(playerName, playerClass);
 
 	spriteList = new Array();
+	spriteList.push(player);
 
 	document.getElementById("resist-canvas").onclick = function (event) {
 		if (player.id == -1) {
@@ -40,7 +41,10 @@ function start() {
 
 	document.getElementById("resist-canvas").oncontextmenu = function (event) {
 		event.preventDefault();
-		networkConnector.sendEvent("custom-attack", networkConnector.connectorClientId, "special-attack-1");	
+
+		if (player.canSendEvent("custom-attack")) {
+			networkConnector.sendEvent("custom-attack", networkConnector.connectorClientId, "special-attack-1");	
+		}
 	}
 
 	// draw map

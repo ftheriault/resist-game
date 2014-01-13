@@ -24,37 +24,37 @@ module.exports = Sprite = function(type, x, y) {
 	}
 
 	this.loadTickImages = function() {	
-		var imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk.png", "WALK", 9, 4);
-		imageSprite.changeColumnInterval(1, 8);
+		var imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/walk.png", "WALK", 9, 4);
+		imageSprite.changeColumnInterval(0, 7);
 		this.tileSpriteList.push(imageSprite);
 
-		imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/attack.png", "ATTACK", 6, 4);
-		imageSprite.changeColumnInterval(1, 6);
+		imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/attack.png", "ATTACK", 6, 4);
+		imageSprite.changeColumnInterval(0, 5);
 		this.tileSpriteList.push(imageSprite);	
 
 		if (this.type == "Mage" || this.type == "Warrior" || this.type == "Priest") {
-			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk-head.png", "WALK", 9, 4);
-			imageSprite.changeColumnInterval(1, 8);
+			imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/walk-head.png", "WALK", 9, 4);
+			imageSprite.changeColumnInterval(0, 7);
 			this.tileSpriteList.push(imageSprite);
 
-			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk-torso.png", "WALK", 9, 4);
-			imageSprite.changeColumnInterval(1, 8);
+			imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/walk-torso.png", "WALK", 9, 4);
+			imageSprite.changeColumnInterval(0, 7);
 			this.tileSpriteList.push(imageSprite);
 
-			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/walk-pants.png", "WALK", 9, 4);
-			imageSprite.changeColumnInterval(1, 8);
+			imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/walk-pants.png", "WALK", 9, 4);
+			imageSprite.changeColumnInterval(0, 7);
 			this.tileSpriteList.push(imageSprite);
 
-			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/attack-head.png", "ATTACK", 6, 4);
-			imageSprite.changeColumnInterval(1, 6);
+			imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/attack-head.png", "ATTACK", 6, 4);
+			imageSprite.changeColumnInterval(0, 5);
 			this.tileSpriteList.push(imageSprite);
 
-			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/attack-torso.png", "ATTACK", 6, 4);
-			imageSprite.changeColumnInterval(1, 6);
+			imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/attack-torso.png", "ATTACK", 6, 4);
+			imageSprite.changeColumnInterval(0, 5);
 			this.tileSpriteList.push(imageSprite);
 
-			imageSprite = new TileSprite("/client/images/sprites/" + this.type.toLowerCase() + "/attack-pants.png", "ATTACK", 6, 4);
-			imageSprite.changeColumnInterval(1, 6);
+			imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/attack-pants.png", "ATTACK", 6, 4);
+			imageSprite.changeColumnInterval(0, 5);
 			this.tileSpriteList.push(imageSprite);
 		}
 
@@ -103,32 +103,32 @@ module.exports = Sprite = function(type, x, y) {
 				if (this.pendingAnimation == null && this.tileSpriteList[i].type == "WALK") {
 					var walking = false;
 					if (this.y > this.destY) {
-						this.currentAnimationRow = 1;
+						this.currentAnimationRow = 0;
 						this.tileSpriteList[i].changeRow(this.currentAnimationRow);
-						this.tileSpriteList[i].changeColumnInterval(2, 9);
+						this.tileSpriteList[i].changeColumnInterval(1, 8);
 						walking = true;
 					}
 					else if (this.y < this.destY) {
-						this.currentAnimationRow = 3;
+						this.currentAnimationRow = 2;
 						this.tileSpriteList[i].changeRow(this.currentAnimationRow);	
-						this.tileSpriteList[i].changeColumnInterval(2, 9);	
+						this.tileSpriteList[i].changeColumnInterval(1, 8);	
 						walking = true;
 					}
 					if (this.x < this.destX) {
-						this.currentAnimationRow = 4;
+						this.currentAnimationRow = 3;
 						this.tileSpriteList[i].changeRow(this.currentAnimationRow);	
-						this.tileSpriteList[i].changeColumnInterval(2, 9);
+						this.tileSpriteList[i].changeColumnInterval(1, 8);
 						walking = true;
 					}
 					else if (this.x > this.destX) {
-						this.currentAnimationRow = 2;
+						this.currentAnimationRow = 1;
 						this.tileSpriteList[i].changeRow(this.currentAnimationRow);	
-						this.tileSpriteList[i].changeColumnInterval(2, 9);
+						this.tileSpriteList[i].changeColumnInterval(1, 8);
 						walking = true;
 					}
 
 					if (!walking) {
-						this.tileSpriteList[i].changeColumnInterval(1, 1);						
+						this.tileSpriteList[i].changeColumnInterval(0, 0);						
 					}
 
 					this.tileSpriteList[i].tick(ctx, this.x, this.y);

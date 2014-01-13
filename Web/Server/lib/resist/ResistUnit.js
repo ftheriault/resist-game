@@ -129,6 +129,11 @@ module.exports = ResistUnit = function (playerName, sprite) {
 		this.speed = data["speed"];
 		this.sprite.type = data["type"];
 		this.realPlayer = data["realPlayer"];
+		this.hitCooldown = data["hitCooldown"];
+
+		if (data["attackCooldown"] > 0) {
+			this.attackCooldown = data["attackCooldown"];
+		}
 	}
 
 	this.toArray = function() {		
@@ -142,6 +147,8 @@ module.exports = ResistUnit = function (playerName, sprite) {
 			playerName : this.playerName,
 			type : this.sprite.type,
 			realPlayer : this.realPlayer,
+			hitCooldown : this.hitCooldown,
+			attackCooldown : this.attackCooldown,
 			dataType : "unit-data"
 		}
 
