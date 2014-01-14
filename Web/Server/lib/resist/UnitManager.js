@@ -119,7 +119,7 @@ module.exports = UnitManager = function (callBack, isClient) {
     	for (var i = 0; i < this.unitList.length; i++) {
     		this.unitList[i].tick(delta, ctxMap);
 
-    		if (this.unitList[i].customAttack == "special-attack-1") {
+    		if (this.unitList[i].customAttack == "special-attack-1" && this.unitList[i].attackCooldown == 0) {
 				this.unitList[i].attackCooldown = this.unitList[i].hitCooldown;
 				var effect = null;
 
