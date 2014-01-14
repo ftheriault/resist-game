@@ -16,8 +16,6 @@ module.exports = UnitManager = function (callBack, isClient) {
 		}, false);
 		player.connector.setSocket(socket);
 
-		console.log("info", "New player connection : " + player.playerName);
-
 		// notify everybody of the new player
 		this.broadCastEvent("new-sprite", player.id, player.toArray());
 

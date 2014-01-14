@@ -108,7 +108,6 @@ setInterval(loop, 25);
 function loop() {
     if (unitManager.getRealPlayerCount() == 0) {
     	if (currentWave != null) {
-    		console.log("No more connected players, deleting wave");
     		currentWave.destroy();
     		currentWave = null;
     		waveNumber = 1;
