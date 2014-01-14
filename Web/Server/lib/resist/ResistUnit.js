@@ -121,10 +121,19 @@ module.exports = ResistUnit = function (playerName, sprite) {
 	}
 
 	this.fromArray = function(data) {
-		this.sprite.destX = data["destX"];
-		this.sprite.destY = data["destY"];
-		this.sprite.x = data["posX"];
-		this.sprite.y = data["posY"];
+		var positionThreshold = 50;
+
+		if (data["attackCooldown"] == data["hitCooldown"]) {
+			this.sprite.destX = this.sprite.x;
+			this.sprite.destY = this.sprite.y;
+		}
+		else {
+			this.sprite.destX = data["destX"];
+			this.sprite.destY = data["destY"];
+			this.sprite.x = data["posX"];
+			this.sprite.y = data["posY"];
+		}
+
 		this.sprite.life = data["life"];
 		this.speed = data["speed"];
 		this.sprite.type = data["type"];

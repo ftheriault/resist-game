@@ -50,8 +50,8 @@ module.exports = DummyBehavior = function(spriteUnit) {
         if (updated) {
             if (this.sprite.destX <= this.boundPadding) { this.sprite.destX = this.boundPadding; }
             if (this.sprite.destY <= this.boundPadding) { this.sprite.destY = this.boundPadding; }
-            if (this.sprite.destX >= this.gameWidth - this.boundPadding) { this.sprite.destX = this.gameWidth - this.boundPadding; }
-            if (this.sprite.destY >= this.gameHeight - this.boundPadding) { this.sprite.destY = this.gameWidth - this.boundPadding; }
+            if (this.sprite.destX >= gameWidth - this.boundPadding) { this.sprite.destX = gameWidth - this.boundPadding; }
+            if (this.sprite.destY >= gameHeight - this.boundPadding) { this.sprite.destY = gameHeight - this.boundPadding; }
 
             unitManager.broadCastEvent("sprite-update", this.spriteUnit.id, this.spriteUnit.toArray());
         }

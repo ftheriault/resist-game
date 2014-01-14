@@ -167,7 +167,7 @@ module.exports = Sprite = function(type, x, y) {
 
 			if (this.life > 0) {
 				ctx.fillStyle = "red";
-				ctx.fillRect(this.x - 10, this.y - 25, 20 * (1.0 * this.life/this.maxLife), 5);
+				ctx.fillRect(this.x - (20 + this.maxLife/20)/2, this.y - 25, (20 + this.maxLife/20) * (1.0 * this.life/this.maxLife), 5);
 			}
 
 			if (spriteUnit != null && spriteUnit.realPlayer) {
@@ -176,5 +176,10 @@ module.exports = Sprite = function(type, x, y) {
 				ctx.fillText(spriteUnit.playerName, this.x - 20, this.y + 50);
 			}
 		}
+	}
+
+	this.drawCooldown = function (ctx, spriteUnit) {
+		ctx.fillStyle = "yellow";
+		ctx.fillRect(this.x - (20 + this.maxLife/20)/2, this.y - 18, (20 + this.maxLife/20) * (1.0 * spriteUnit.attackCooldown/spriteUnit.hitCooldown), 2);
 	}
 }

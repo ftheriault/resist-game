@@ -63,8 +63,9 @@ button.btn-enter:hover {
 
 .canvas-container {
 	width: 576px;
+	height: 576px;
 	margin: 10px auto 0px auto;
-	border: 1px solid white;
+	border: 1px solid #666;
 	background: black;
 	position: relative;
 	border-radius: 6px;

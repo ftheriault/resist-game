@@ -61,12 +61,12 @@ $(document).ready(function () {
 	});
 });
 
-function capitaliseFirstLetter(string)
-{
+function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function start() {
+function start(button) {
+	button.onclick = function(){};
 
 	playerName = $("#player-name").val();
 	playerClass = capitaliseFirstLetter(currentClassSelection.replace("-class", ""));
@@ -137,11 +137,6 @@ function receiveEvent (eventType, spriteDestId, data) {
 					break;
 				}
 				else {
-					if (data != null && data["posX"] != null) {
-						spriteList[i].sprite.x = data["posX"];
-						spriteList[i].sprite.y = data["posY"];
-					}
-
 					spriteList[i].toDigestEventList.push(new Array(eventType, spriteDestId, data));
 					found = true;
 				}
@@ -174,12 +169,13 @@ function loop() {
 	}
 
     for (var i = 0; i < spriteList.length; i++) {
-    	if (spriteList[i].realPlayer) {
-    		currentRealPlayer++;
-    	}
-
     	spriteList[i].tick(delta, ctxMap);
     	spriteList[i].sprite.tick(delta, ctx, spriteList[i]);
+
+    	if (spriteList[i].realPlayer) {
+    		currentRealPlayer++;
+			spriteList[i].sprite.drawCooldown(ctx, spriteList[i]);
+    	}
     }
 
     if (waveStartingIn != null) {
@@ -197,5 +193,6 @@ function loop() {
 		ctx.font = "12px Arial";
 		ctx.fillText(currentRealPlayer + " players (max online = " + maxRealPlayer + "), wave #" + waveNumber + " (max = " + maxWaveNumber + ")", 5, ctxMap.getHeight() - 5);
 	}
+
 }
 
