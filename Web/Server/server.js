@@ -54,8 +54,8 @@ function handler (request, response) {
 // Game logic
 // -------------------------------------------------
 
-var Map = require('./lib/resist/Map/Map'),
-	MapLoader = require('./lib/resist/Map/MapLoader'),
+var Map = require('./lib/resist/map/Map'),
+	MapLoader = require('./lib/resist/map/MapLoader'),
 	ctxMap = new Map();
 
 MapLoader('./client/maps/town.json', ctxMap);
