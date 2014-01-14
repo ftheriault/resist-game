@@ -1,6 +1,6 @@
 module.exports = Slash = function(sprite) {
 	this.sprite = sprite;
-	this.distance = 100;
+	this.distance = 120;
 	this.damage = 30;
 
 	this.tickTime = 0;
@@ -32,7 +32,7 @@ module.exports = Slash = function(sprite) {
 		this.animationTime += delta;
 		var percentDone = 1.0 * this.animationTime/this.animationMaxTime;
 
-		if (percentDone < 0.8) {
+		if (percentDone < 0.7) {
 			degrade = ctx.createRadialGradient(this.sprite.x,
 											   this.sprite.y,
 											   percentDone * this.distance,

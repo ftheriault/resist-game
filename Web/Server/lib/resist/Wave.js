@@ -1,6 +1,7 @@
-module.exports = Wave = function (gameWidth, gameHeight, unitManager, startDelay, waveNumber) {
+module.exports = Wave = function (gameWidth, gameHeight, unitManager, startDelay, waveNumber, maxWaveNumber) {
 	this.level = unitManager.getRealPlayerCount() + 1;
 	this.waveNumber = waveNumber;
+	this.maxWaveNumber = maxWaveNumber;
 	this.gameWidth = gameWidth;
 	this.gameHeight = gameHeight;
 	this.unitManager = unitManager;
@@ -54,7 +55,9 @@ module.exports = Wave = function (gameWidth, gameHeight, unitManager, startDelay
 	this.toArray = function () {
 		var data = {
 			waveNumber : this.waveNumber,
-			startDelay : this.startDelay
+			startDelay : this.startDelay,
+			maxWaveNumber : this.maxWaveNumber,
+			maxPlayerNumber : this.unitManager.getMaxPlayerNumber()
 		}
 
 		return data;

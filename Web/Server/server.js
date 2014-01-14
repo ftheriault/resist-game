@@ -70,12 +70,13 @@ var unitManager = new UnitManager();
 var time;
 var currentWave = null;
 var waveNumber = 1;
+var maxWaveNumber = 1;
 
 io.sockets.on('connection', function (socket) {
 
 	// When connecting, send credentials and notice other players
 	socket.on("send-credentials", function (data) {
-		player = unitManager.createPlayerUnit(socket, data);
+		var player = unitManager.createPlayerUnit(socket, data);
 
 		socket.emit("credentials-result", {
 			id : player.id
@@ -115,13 +116,17 @@ function loop() {
     }
     else {
     	if (currentWave == null) {
-    		currentWave = new Wave(576, 576, unitManager, 5, waveNumber);
+    		currentWave = new Wave(576, 576, unitManager, 5, waveNumber, maxWaveNumber);
     		currentWave.initialize();
     	}
 
     	if (currentWave.tick()) {
     		currentWave = null;
     		waveNumber++;
+
+    		if (waveNumber > maxWaveNumber) {
+    			maxWaveNumber = waveNumber;
+    		}
     	}
     	else if (unitManager.getRealAlivePlayerCount() == 0) {
     		currentWave.destroy();

@@ -2,7 +2,12 @@ module.exports = UnitManager = function (callBack, isClient) {
 	var unitManager = this;
 	this.unitList = new Array();
 	this.unitsToDelete = new Array();
+	this.maxNumberOfPlayers = 0;
 	this.time = 0;
+
+	this.getMaxPlayerNumber = function () {
+		return this.maxNumberOfPlayers;
+	}
 
 	this.createPlayerUnit = function (socket, data) {
 		player = this.createUnit(data["playerName"], new Sprite(data["playerClass"], 250, 450), true);
@@ -16,9 +21,19 @@ module.exports = UnitManager = function (callBack, isClient) {
 		// notify everybody of the new player
 		this.broadCastEvent("new-sprite", player.id, player.toArray());
 
+		var playerCount = 0;
+
 		// notify the player of all the sprites
 		for (var i = 0; i < this.unitList.length; i++) {
 			player.connector.sendEvent("new-sprite", this.unitList[i].id, this.unitList[i].toArray());
+
+			if (this.unitList[i].realPlayer) {
+				playerCount++;
+			}
+		}
+
+		if (playerCount > this.maxNumberOfPlayers) {
+			this.maxNumberOfPlayers = playerCount;
 		}
 
 		return player;

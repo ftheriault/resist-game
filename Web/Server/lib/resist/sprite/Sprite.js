@@ -56,6 +56,21 @@ module.exports = Sprite = function(type, x, y) {
 			imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/attack-pants.png", "ATTACK", 6, 4);
 			imageSprite.changeColumnInterval(0, 5);
 			this.tileSpriteList.push(imageSprite);
+
+			if (this.type == "Warrior") {
+				imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/attack-weapon.png", "ATTACK", 6, 4);
+				imageSprite.changeColumnInterval(0, 5);
+				this.tileSpriteList.push(imageSprite);
+			}
+			else if (this.type == "Priest") {
+				imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/walk-legs.png", "WALK", 9, 4);
+				imageSprite.changeColumnInterval(0, 7);
+				this.tileSpriteList.push(imageSprite);
+
+				imageSprite = new TiledImage("/client/images/sprites/" + this.type.toLowerCase() + "/attack-legs.png", "ATTACK", 6, 4);
+				imageSprite.changeColumnInterval(0, 5);
+				this.tileSpriteList.push(imageSprite);
+			}
 		}
 
 	}
@@ -104,27 +119,28 @@ module.exports = Sprite = function(type, x, y) {
 					var walking = false;
 					if (this.y > this.destY) {
 						this.currentAnimationRow = 0;
-						this.tileSpriteList[i].changeRow(this.currentAnimationRow);
 						this.tileSpriteList[i].changeColumnInterval(1, 8);
 						walking = true;
 					}
 					else if (this.y < this.destY) {
-						this.currentAnimationRow = 2;
-						this.tileSpriteList[i].changeRow(this.currentAnimationRow);	
+						this.currentAnimationRow = 2;	
 						this.tileSpriteList[i].changeColumnInterval(1, 8);	
 						walking = true;
 					}
+
 					if (this.x < this.destX) {
 						this.currentAnimationRow = 3;
-						this.tileSpriteList[i].changeRow(this.currentAnimationRow);	
 						this.tileSpriteList[i].changeColumnInterval(1, 8);
 						walking = true;
 					}
 					else if (this.x > this.destX) {
 						this.currentAnimationRow = 1;
-						this.tileSpriteList[i].changeRow(this.currentAnimationRow);	
 						this.tileSpriteList[i].changeColumnInterval(1, 8);
 						walking = true;
+					}
+
+					if (this.currentAnimationRow != this.tileSpriteList[i].imageCurrentRow) {
+						this.tileSpriteList[i].changeRow(this.currentAnimationRow);	
 					}
 
 					if (!walking) {
@@ -149,10 +165,12 @@ module.exports = Sprite = function(type, x, y) {
 				this.pendingAnimation = null;
 			}
 
-			ctx.fillStyle = "red";
-			ctx.fillRect(this.x - 10, this.y - 25, 20 * (1.0 * this.life/this.maxLife), 5);
+			if (this.life > 0) {
+				ctx.fillStyle = "red";
+				ctx.fillRect(this.x - 10, this.y - 25, 20 * (1.0 * this.life/this.maxLife), 5);
+			}
 
-			if (spriteUnit.realPlayer) {
+			if (spriteUnit != null && spriteUnit.realPlayer) {
 				ctx.fillStyle = "black";
   				ctx.font = "10px Arial";
 				ctx.fillText(spriteUnit.playerName, this.x - 20, this.y + 50);

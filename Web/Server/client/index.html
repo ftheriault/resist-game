@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Resist Game : Can you resist the waves of monsters ?</title>
+		<title>Resist! How long can you last against the waves of monsters?</title>
 		<link rel="stylesheet" href="/client/css/global.css" />
 		<script src="/client/js/jquery-2.0.3.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
@@ -12,24 +12,37 @@
 		<script src="/client/js/resist-canvas.js"></script>
 	</head>
 	<body>
-		<h3>Resist! How long can you survive against the monster waves ?</h3>
+		<h1>Resist! How long can you survive against the monster waves?</h1>
 		<h2 class="map-title">&nbsp;</h2>
-		<div class="canvas-container">
+
+		<div class="canvas-container" id="canvas-container">
 			<canvas width="576" height="576" id="resist-canvas"></canvas>
 
 			<div class="login-section">
 				<div>
-					<input type="text" id="player-name" placeholder="Name" />
+					<input type="text" id="player-name" placeholder="Character name" />
 				</div>
 				<div>
-					<select id="player-class">
-						<option>Warrior</option>
-						<option>Mage</option>
-						<option>Priest</option>
-					</select>
+					<div class="player-class" id="warrior-class">
+						<h3>Warrior</h3>
+
+						<p>Melee class, front line attacker</p>
+						<canvas width="50" height="50"></canvas>
+					</div>
+					<div class="player-class" id="mage-class">
+						<h3>Mage</h3>
+						<p>Extremely powerful, but must be defended</p>
+						<canvas width="50" height="50"></canvas>
+					</div>
+					<div class="player-class" id="priest-class">
+						<h3>Priest</h3>
+						<p>Excels in protecting and healing</p>
+						<canvas width="50" height="50"></canvas>
+					</div>
+					<div class="clear"></div>
 				</div>
 				<div>
-					<button onclick="start()">Enter</button>
+					<button onclick="start()" class="btn-enter">Enter</button>
 				</div>
 			</div>
 		</div>

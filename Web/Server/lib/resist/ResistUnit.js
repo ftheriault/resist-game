@@ -156,12 +156,12 @@ module.exports = ResistUnit = function (playerName, sprite) {
 	}	
 
 	if (this.sprite.type == "Mage") {
-		this.setProfile(80, 1.5, 10, 3);
+		this.setProfile(90, 1.5, 10, 3);
 	}
 	else if (this.sprite.type == "Warrior") {
-		this.setProfile(120, 2, 3, 1);
+		this.setProfile(140, 2, 3, 1);
 	}
 	else if (this.sprite.type == "Priest") {
-		this.setProfile(60, 2, 3, 1);
+		this.setProfile(70, 2, 3, 1);
 	}
 }

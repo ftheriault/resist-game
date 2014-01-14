@@ -7,6 +7,7 @@ module.exports = DummyBehavior = function(spriteUnit) {
     this.firstIteration = true;
     this.waitTime = 0;
     this.tickTime = 0;
+    this.boundPadding = 50;
 
 	this.tick = function (unitList, unitManager, gameWidth, gameHeight) {    
         var now = new Date().getTime();
@@ -47,10 +48,10 @@ module.exports = DummyBehavior = function(spriteUnit) {
         }
 
         if (updated) {
-            if (this.sprite.destX <= 0) { this.sprite.destX = 30; }
-            if (this.sprite.destY <= 0) { this.sprite.destY = 30; }
-            if (this.sprite.destX >= this.gameWidth) { this.sprite.destX = this.gameWidth - 30; }
-            if (this.sprite.destY >= this.gameHeight) { this.sprite.destY = this.gameWidth - 30; }
+            if (this.sprite.destX <= this.boundPadding) { this.sprite.destX = this.boundPadding; }
+            if (this.sprite.destY <= this.boundPadding) { this.sprite.destY = this.boundPadding; }
+            if (this.sprite.destX >= this.gameWidth - this.boundPadding) { this.sprite.destX = this.gameWidth - this.boundPadding; }
+            if (this.sprite.destY >= this.gameHeight - this.boundPadding) { this.sprite.destY = this.gameWidth - this.boundPadding; }
 
             unitManager.broadCastEvent("sprite-update", this.spriteUnit.id, this.spriteUnit.toArray());
         }
