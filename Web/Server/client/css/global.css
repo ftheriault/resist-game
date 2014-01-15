@@ -92,6 +92,12 @@ button.btn-enter:hover {
 	border-radius: 6px;
 }
 
+
+.commands {
+	width: 576px;
+	margin: 10px auto 0px auto;
+}
+
 .login-section {
 	position: absolute;
 	width: 540px;
