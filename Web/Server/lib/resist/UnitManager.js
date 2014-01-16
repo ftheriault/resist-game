@@ -10,7 +10,7 @@ module.exports = UnitManager = function (callBack, isClient) {
 	}
 
 	this.createPlayerUnit = function (socket, data) {
-		player = this.createUnit(data["playerName"], new Sprite(data["playerClass"], 250, 450), true);
+		var player = this.createUnit(data["playerName"], new Sprite(data["playerClass"], 250, 450), true);
 		player.connector = new NetworkConnector(function (eventType, spriteDestId, data) {
 			unitManager.broadCastEvent(eventType, spriteDestId, data, player);
 		}, false);
