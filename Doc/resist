@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# resist        Startup script for the Resist-game (to put in /etc/init.d)
+#
+# chkconfig: 345 99 01
+# description: don't forget the chkconfig resist on
+#
+
+start(){
+        echo "Starting Resist"
+        node /home/o8sshadmin/resist-game/server.js > /dev/null 2>&1 &
+}
+
+stop(){
+        echo "Stopping Resist"
+		id=`ps -ef | grep "resist-game" | awk '{print $2}'`
+        for tmp in $id
+        do
+                kill $tmp > /dev/null 2>&1
+        done
+
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  *)
+        echo "Usage: resist {start|stop}"
+        exit 1
+esac
+
+exit 0
