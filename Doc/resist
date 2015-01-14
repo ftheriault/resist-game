@@ -8,7 +8,9 @@
 
 start(){
         echo "Starting Resist"
-        node /home/o8sshadmin/resist-game/server.js > /dev/null 2>&1 &
+        cd /home/o8sshadmin/resist-game
+        /usr/local/bin/node /home/o8sshadmin/resist-game/server.js > /dev/null 2>&1 &
+
 }
 
 stop(){
